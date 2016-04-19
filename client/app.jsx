@@ -28,10 +28,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    var socket = io.connect();
-    socket.on('news', function (data) {
-    console.log(data);
+    let socket = io.connect();
+    socket.on('test', (data) => {
+      console.log(data);
+      socket.emit('test2', data);
     });
+
     const self = this;
     queryAll({ query: 'Kanye',
       })
@@ -82,7 +84,7 @@ class App extends React.Component {
             />
             <SongPlayer track = {this.state.currentTrack} />
             <Button label="Sign Up!" style={{color: 'white', paddingLeft: '45px' }} />
-            <Button label="Sign In!" style={{color: 'white' }} />   
+            <Button label="Sign In!" style={{color: 'white' }} />
           </AppBar>
           <Nav handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
           <CardsContainer tracks = {this.state.tracks}
