@@ -7,6 +7,7 @@ import Navigation from 'react-toolbox/lib/navigation';
 import queryAll from './queryAll.js';
 import _ from 'underscore';
 import Button from 'react-toolbox/lib/button';
+import io from 'socket.io-client';
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    var socket = io.connect();
+    socket.on('news', function (data) {
+    console.log(data);
+    });
     const self = this;
     queryAll({ query: 'Kanye',
       })
