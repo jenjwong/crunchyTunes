@@ -31,6 +31,7 @@ class App extends React.Component {
 
   componentDidMount() {
     let socket = io.connect();
+
     socket.on('test', (data) => {
       console.log(data);
       socket.emit('test2', data);
