@@ -14,11 +14,16 @@ import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      appData: [],
+      username: '',
+      userId: '',
+      role: 'pleeb',
+      mood: 1 ,
+
       tracks: [
         {
           artist: 'Yeezy',
@@ -36,10 +41,8 @@ class App extends React.Component {
   componentDidMount() {
 
     socket.on('user joined', (user) => {
-      const updatedState = this.state.appData.slice();
-      user.userId = socket.id;
-      updatedState.push(user);
-      this.setState({ appData: updatedState });
+      this.setState({ username: user.username,
+                      userId: socket.id });
       console.log(this.state)
     });
 

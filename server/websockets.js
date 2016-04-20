@@ -1,6 +1,7 @@
 module.exports = (server) => {
   var sessionData = {
-    appData: [],
+    mood: 100,
+    userData: [],
   };
 
 
@@ -18,7 +19,8 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-      sessionData.appData.push({userName: username, userId: socket.id});
+      sessionData.userData.push({userName: username, userId: socket.id, role: 'pleeb', mood: 1});
+      console.log(sessionData)
     });
   });
 };
