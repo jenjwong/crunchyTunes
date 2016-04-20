@@ -16,14 +16,26 @@ class PlayList extends React.Component {
 
   render() {
     return (
-      <div className="playlist">
+       <List selectable ripple className='list'>
         <ListItem
           avatar='https://dl.dropboxusercontent.com/u/2247264/assets/m.jpg'
-          caption='Title'
-          legend="Artist"
+          caption='Dr. Manhattan'
+          legend="Jonathan 'Jon' Osterman"
+          className='listItem'
         />
-       
-      </div>
+        <ListItem
+          avatar='https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg'
+          caption='Ozymandias'
+          legend='Adrian Veidt'
+          className='listItem'
+        />
+        <ListItem
+          avatar='https://dl.dropboxusercontent.com/u/2247264/assets/r.jpg'
+          caption='Rorschach'
+          legend='Walter Joseph Kovacs'
+          className='listItem'
+        />
+      </List>
     );
   }
 
