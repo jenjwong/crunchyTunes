@@ -8,6 +8,8 @@ import queryAll from './queryAll.js';
 import _ from 'underscore';
 import Button from 'react-toolbox/lib/button';
 import io from 'socket.io-client';
+import PlayList from './playList.jsx';
+import { Layout, NavDrawer, Panel, Sidebar } from 'react-toolbox';
 
 class App extends React.Component {
   constructor(props) {
@@ -70,25 +72,22 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-          <AppBar className="appBar" >
-            <Navigation type="horizontal" style= { { width: '700px', }} actions={[
-              {
-                label: 'Crunchy Tunes',
-                raised: true,
-                accent: true,
-                icon: 'audiotrack',
-              }]}
-            />
-            <SongPlayer track = {this.state.currentTrack} />
-            <Button label="Sign Up!" style={{color: 'white', paddingLeft: '45px' }} />
-            <Button label="Sign In!" style={{color: 'white' }} />   
-          </AppBar>
-          <Nav handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+
+      <Layout>
+        <NavDrawer active={true}
+                  pinned={true}>
+          <PlayList/>
+        </NavDrawer>
+          <Panel>
+        <AppBar className="appBar" >
+          <SongPlayer track = {this.state.currentTrack} />
+        </AppBar>
+        <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
           <CardsContainer tracks = {this.state.tracks}
             handleCardPlay = {this.handleCardPlay.bind(this)}
           />
-      </div>
+        </Panel>
+      </Layout>
     );
   }
 }
