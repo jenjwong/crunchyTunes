@@ -76,9 +76,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <Layout>
+      <Layout className='layout'>
         <NavDrawer active={true}
-                  pinned={true}>
+                  pinned={true}
+                  className='navDrawer'
+                  >
           <PlayList/>
         </NavDrawer>
           <Panel>
