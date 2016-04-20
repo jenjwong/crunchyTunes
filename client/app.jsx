@@ -18,6 +18,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      users: [],
       tracks: [
         {
           artist: 'Yeezy',
@@ -33,8 +34,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    socket.on('test', (data) => {
-      console.log(data);
+
+    socket.on('user joined', (user) => {
+      const updatedState = this.state.users.slice();
+      updatedState.push(user);
+      this.setState({ users: updatedState });
+      console.log('inApp')
+      console.log(this.state)
     });
 
     const self = this;

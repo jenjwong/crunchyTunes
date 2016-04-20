@@ -9,15 +9,15 @@ module.exports = (server) => {
     });
 
     socket.on('add user', (username) => {
-      console.log('hit the socket')
+      console.log('log from websockets.js', username);
       socket.username = username;
-      console.log(username)
       socket.broadcast.emit('user joined', {
         username: socket.username,
       });
     });
   });
 };
+
 
 // socket.on('new track', (track) => {
 // var updatedState = this.state.tracks.slice();
