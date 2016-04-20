@@ -18,7 +18,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userInfo: [],
+      appData: [],
       tracks: [
         {
           artist: 'Yeezy',
@@ -36,10 +36,11 @@ class App extends React.Component {
   componentDidMount() {
 
     socket.on('user joined', (user) => {
-      const updatedState = this.state.userInfo.slice();
+      const updatedState = this.state.appData.slice();
       user.userId = socket.id;
       updatedState.push(user);
-      this.setState({ userInfo: updatedState });
+      this.setState({ appData: updatedState });
+      console.log(this.state)
     });
 
     const self = this;
