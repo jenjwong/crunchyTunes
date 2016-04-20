@@ -7,9 +7,12 @@ import Navigation from 'react-toolbox/lib/navigation';
 import queryAll from './queryAll.js';
 import _ from 'underscore';
 import Button from 'react-toolbox/lib/button';
+
 import io from 'socket.io-client';
 import PlayList from './playList.jsx';
 import { Layout, NavDrawer, Panel, Sidebar } from 'react-toolbox';
+
+import socket from './websockets.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -30,7 +33,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let socket = io.connect();
     socket.on('test', (data) => {
       console.log(data);
       socket.emit('test2', data);
