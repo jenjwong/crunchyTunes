@@ -76,6 +76,7 @@ class App extends React.Component {
 
   render() {
     return (
+      <div>
       <Layout className='layout'>
         <NavDrawer active={true}
                   pinned={true}
@@ -93,6 +94,7 @@ class App extends React.Component {
           />
         </Panel>
       </Layout>
+      </div>
     );
   }
 }
