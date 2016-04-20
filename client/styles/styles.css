@@ -6,49 +6,8 @@
   width: 100%;
 }
 
-body{
-  margin:0px;
-}
-
-.navDrawer {
-  width: 300px !important;
-}
-.navDrawer aside{
-  position: fixed;
-  width:300px !important;
-}
-.listItem span {
-  min-height:0px;
-}
-.list {
-  padding: 0px !important;
-}
-.listItem{
-  height: 50px;
-  margin: 0px;
-  padding: 0px;
-}
-.listItem > span{
-  height: 50px;
-  margin: 0px;
-  padding: 0px;
-}
-.style__itemText___1-x0g {
-  font-size: 12px !important;
-}
-.style__image___37utY{
-  height:30px !important;
-  width:30px !important;
-}
-.style__avatar___3mVo5{
-  height:30px !important;
-  width:30px !important;
-}
-/* handles shadow overlay */
-.style__itemContentRoot___342aU {
-  height:50px !important;
-}
 .navBar {
+  padding-top: 100px;
   width: 700px;
 }
 
