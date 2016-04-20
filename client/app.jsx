@@ -13,8 +13,6 @@ import { Layout, NavDrawer, Panel, Sidebar } from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
