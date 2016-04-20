@@ -1,4 +1,9 @@
 module.exports = (server) => {
+  var sessionData = {
+    userInfo: [],
+  };
+
+
   var io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
@@ -13,6 +18,7 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
+      sessionData.userInfo.push({userName: username, userId: socket.id});
     });
   });
 };
