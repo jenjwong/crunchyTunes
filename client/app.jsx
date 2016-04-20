@@ -35,7 +35,6 @@ class App extends React.Component {
   componentDidMount() {
     socket.on('test', (data) => {
       console.log(data);
-      socket.emit('test2', data);
     });
 
     const self = this;
@@ -82,16 +81,14 @@ class App extends React.Component {
                     pinned={true}
                     className='navDrawer'
                     >
-            <PlayList/>
+            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
           </NavDrawer>
             <Panel>
           <AppBar className="appBar" >
             <SongPlayer track = {this.state.currentTrack} />
           </AppBar>
           <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-            <CardsContainer tracks = {this.state.tracks}
-              handleCardPlay = {this.handleCardPlay.bind(this)}
-            />
+            <CardsContainer tracks = {this.state.tracks} />
           </Panel>
         </Layout>
       </div>
