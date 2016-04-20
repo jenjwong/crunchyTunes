@@ -51,7 +51,9 @@ body{
 .navBar {
   width: 700px;
 }
-
+.search-bar {
+  margin-top:100px;
+}
 .appBar {
   position: fixed;
 }
