@@ -4,8 +4,13 @@ import SongPlayer from './songplayer.jsx';
 import CardsContainer from './cardsContainer.jsx';
 import AppBar from 'react-toolbox/lib/app_bar';
 import queryAll from './queryAll.js';
+import _ from 'underscore';
+import Button from 'react-toolbox/lib/button';
+import ChatBox from './chatBox.jsx'
+import io from 'socket.io-client';
 import PlayList from './playList.jsx';
-import { Layout, NavDrawer, Panel } from 'react-toolbox';
+import { Layout, NavDrawer, Panel, Sidebar} from 'react-toolbox';
+>>>>>>> Basic implementation of chat box
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 
@@ -78,28 +83,28 @@ class App extends React.Component {
       });
   }
 
+
+
   render() {
     return (
-      <div>
-        <Layout className='layout'>
-          <NavDrawer active={true}
-                    pinned={true}
-                    className='navDrawer'
-                    >
-            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
-          </NavDrawer>
-            <Panel>
-          <AppBar className="appBar" >
-            <SongPlayer track = {this.state.currentTrack} />
-          </AppBar>
-          <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-            <CardsContainer tracks = {this.state.tracks}
-              handleCardPlay = {this.handleCardPlay.bind(this)}
-            />
-          </Panel>
-        </Layout>
-        <LoginModal />
-      </div>
+      <Layout>
+        <NavDrawer className='navDrawer' active={true}
+                  pinned={true}>
+          <PlayList/>
+        </NavDrawer>
+          <Panel>
+        <AppBar className="appBar" >
+          <SongPlayer track = {this.state.currentTrack} />
+        </AppBar>
+        <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+          <CardsContainer tracks = {this.state.tracks}
+            handleCardPlay = {this.handleCardPlay.bind(this)}
+          />
+        </Panel>
+          <Sidebar className="sideBar" active={true} pinned={ true } width={ 5 }>
+            <ChatBox/>
+        </Sidebar>
+      </Layout>
     );
   }
 }

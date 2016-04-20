@@ -53,6 +53,7 @@ body{
 .navBar {
   width: 700px;
 }
+
 .search-bar {
   margin-top:100px;
 }
@@ -64,4 +65,19 @@ body{
   padding-top: 40px !important;
 }
 
+.sideBar {
+  position: fixed !important;
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.commentForm {
+  position:absolute;
+  bottom:0;
+  right: 0;
+}
+
+.chats {
+  overflow: scroll;
+}
 
