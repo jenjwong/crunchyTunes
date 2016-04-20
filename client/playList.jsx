@@ -5,7 +5,6 @@ import ClassNames from 'classnames';
 import style from './styles/toolbox-theme';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 
-import playListItem from './playListItem.jsx';
 import socket from './websockets.js';
 
 class PlayList extends React.Component {
