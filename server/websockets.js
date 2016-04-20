@@ -19,6 +19,7 @@ module.exports = (server) => {
         username: socket.username,
       });
       sessionData.userData.push({ userName: username, userId: socket.id, role: 'pleeb', mood: 1 });
+      console.log(sessionData);
     });
   });
 };

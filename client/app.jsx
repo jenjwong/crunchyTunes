@@ -37,10 +37,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
     socket.on('user joined', (user) => {
-      this.setState({ username: user.username,
-                      userId: socket.id });
+      this.setState(
+        { username: user.username,
+          userId: socket.id });
     });
 
     const self = this;
