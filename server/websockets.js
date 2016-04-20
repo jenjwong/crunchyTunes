@@ -7,6 +7,15 @@ module.exports = (server) => {
       // emit to everybody-new track
       socket.emit('new track', track);
     });
+
+    socket.on('add user', (username) => {
+    socket.emit('test', { fdfs: 'fdsfds' });
+      console.log('hit the socket')
+      socket.username = username;
+      socket.broadcast.emit('user joined', {
+        username: socket.username,
+      });
+    });
   });
 };
 

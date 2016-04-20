@@ -10,15 +10,35 @@ class GetName extends React.Component {
 
     this.state = {
       active: true,
+      name: name,
     };
   }
 
   handleToggle() {
-    console.log('clicked')
     this.setState({
      active: false,
    });
+
+   var username;
+   username = this.state.name
+
+   function setUsername () {
+     console.log(username)
+      if (username) {
+        socket.emit('add user', username);
+      }
+    }
+    setUsername().bind(this);
   }
+
+
+  handleChange(name, value) {
+    console.log('handleChange')
+    this.setState({
+     [name]: value,
+   });
+  }
+
 
 
   render() {
@@ -28,10 +48,10 @@ class GetName extends React.Component {
        active={this.state.active}
        onEscKeyDown={this.handleToggle}
        onOverlayClick={this.handleToggle}
-       title='My awesome dialog'
+       title='Enter Music Dictator'
      >
-     <Button label='Join' onClick={this.handleToggle.bind(this)} />
-      <Input > </Input>
+      <Button label='Join' onClick={this.handleToggle.bind(this)} />
+      <Input type='text' label='Name' name='name' value={this.state.name} onChange={this.handleChange.bind(this, 'name')} maxLength={16 } />
       </Dialog>
 
       </div>
