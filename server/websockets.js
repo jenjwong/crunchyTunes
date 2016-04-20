@@ -9,9 +9,9 @@ module.exports = (server) => {
     });
 
     socket.on('add user', (username) => {
-    socket.emit('test', { fdfs: 'fdsfds' });
       console.log('hit the socket')
       socket.username = username;
+      console.log(username)
       socket.broadcast.emit('user joined', {
         username: socket.username,
       });

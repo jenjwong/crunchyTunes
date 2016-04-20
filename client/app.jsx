@@ -11,7 +11,7 @@ import io from 'socket.io-client';
 import PlayList from './playList.jsx';
 import { Layout, NavDrawer, Panel, Sidebar } from 'react-toolbox';
 import socket from './websockets.js';
-import GetName from './GetName.jsx';
+import LoginModal from './LoginModal.jsx';
 
 
 class App extends React.Component {
@@ -93,7 +93,7 @@ class App extends React.Component {
             />
           </Panel>
         </Layout>
-        <GetName />
+        <LoginModal />
       </div>
     );
   }
