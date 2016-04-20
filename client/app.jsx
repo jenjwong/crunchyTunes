@@ -77,23 +77,23 @@ class App extends React.Component {
   render() {
     return (
       <div>
-      <Layout className='layout'>
-        <NavDrawer active={true}
-                  pinned={true}
-                  className='navDrawer'
-                  >
-          <PlayList/>
-        </NavDrawer>
-          <Panel>
-        <AppBar className="appBar" >
-          <SongPlayer track = {this.state.currentTrack} />
-        </AppBar>
-        <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-          <CardsContainer tracks = {this.state.tracks}
-            handleCardPlay = {this.handleCardPlay.bind(this)}
-          />
-        </Panel>
-      </Layout>
+        <Layout className='layout'>
+          <NavDrawer active={true}
+                    pinned={true}
+                    className='navDrawer'
+                    >
+            <PlayList/>
+          </NavDrawer>
+            <Panel>
+          <AppBar className="appBar" >
+            <SongPlayer track = {this.state.currentTrack} />
+          </AppBar>
+          <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+            <CardsContainer tracks = {this.state.tracks}
+              handleCardPlay = {this.handleCardPlay.bind(this)}
+            />
+          </Panel>
+        </Layout>
       </div>
     );
   }
