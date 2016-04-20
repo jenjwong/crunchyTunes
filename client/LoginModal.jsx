@@ -36,14 +36,14 @@ class LoginModal extends React.Component {
     return (
       <div>
       <Dialog
-        active={this.state.active}
-        onEscKeyDown={this.handleToggle}
-        onOverlayClick={this.handleToggle}
+        active={ this.state.active }
+        onEscKeyDown={ this.handleToggle }
+        onOverlayClick={ this.handleToggle }
         title="Enter Music Dictator"
       >
-      <Button label="Join" onClick={this.handleToggle.bind(this)} />
-      <Input type="text" label="Name" name="name" value={this.state.name}
-        onChange={this.changeState.bind(this, 'name')} maxLength={16 }
+      <Button label="Join" onClick={ this.handleToggle.bind(this) } />
+      <Input type="text" label="Name" name="name" value={ this.state.name }
+        onChange={ this.changeState.bind(this, 'name') } maxLength={ 16 }
       />
       </Dialog>
       </div>

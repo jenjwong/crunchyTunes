@@ -9,7 +9,6 @@ module.exports = (server) => {
 
   io.on('connection', (socket) => {
     socket.on('add track', (track) => {
-      console.log(track);
       // emit to everybody-new track
       socket.emit('new track', track);
     });
@@ -19,8 +18,7 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-      sessionData.userData.push({userName: username, userId: socket.id, role: 'pleeb', mood: 1});
-      console.log(sessionData)
+      sessionData.userData.push({ userName: username, userId: socket.id, role: 'pleeb', mood: 1 });
     });
   });
 };

@@ -22,7 +22,7 @@ class App extends React.Component {
       username: '',
       userId: '',
       role: 'pleeb',
-      mood: 1 ,
+      mood: 1,
 
       tracks: [
         {
@@ -43,7 +43,6 @@ class App extends React.Component {
     socket.on('user joined', (user) => {
       this.setState({ username: user.username,
                       userId: socket.id });
-      console.log(this.state)
     });
 
     const self = this;
