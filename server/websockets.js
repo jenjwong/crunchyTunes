@@ -9,9 +9,8 @@ module.exports = (server) => {
     });
 
     socket.on('add user', (username) => {
-      console.log('log from websockets.js', username);
       socket.username = username;
-      socket.broadcast.emit('user joined', {
+      socket.emit('user joined', {
         username: socket.username,
       });
     });

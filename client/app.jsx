@@ -39,8 +39,6 @@ class App extends React.Component {
       const updatedState = this.state.users.slice();
       updatedState.push(user);
       this.setState({ users: updatedState });
-      console.log('inApp')
-      console.log(this.state)
     });
 
     const self = this;
