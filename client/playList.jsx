@@ -32,7 +32,7 @@ class PlayList extends React.Component {
   render() {
     return (
       <List selectable ripple className="list">
-        <ListItem caption="Songs" />
+        <ListSubHeader caption="Dictator's Playlist" />
         {this.state.tracks.map((track) =>
           <ListItem
             caption={`${track.songTitle}\n${track.creator}`}
