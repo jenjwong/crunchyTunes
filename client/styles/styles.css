@@ -34,22 +34,7 @@ body{
   margin: 0px;
   padding: 0px;
 }
-.style__itemText___1-x0g {
-  font-size: 12px !important;
-  white-space: normal;
-}
-.style__image___37utY{
-  height:30px !important;
-  width:30px !important;
-}
-.style__avatar___3mVo5{
-  height:30px !important;
-  width:30px !important;
-}
-/* handles shadow overlay */
-.style__itemContentRoot___342aU {
-  height:50px !important;
-}
+
 .navBar {
   width: 700px;
 }
