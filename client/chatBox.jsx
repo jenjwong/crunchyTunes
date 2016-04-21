@@ -11,6 +11,18 @@ class ChatBox extends React.Component {
     }
   }
 
+  updateMessages(message) {
+    //get new message from user and update it on their page
+    var msgsCopy = this.state.messages.slice();
+    msgsCopy.push(message);
+    this.setState({'messages': msgsCopy});
+
+    //automatic scroll to bottom so user sees new message
+    var domnode = ReactDOM.findDOMNode(this.refs.chats);
+    ReactDOM.findDOMNode(this.refs.chats).scrollTop = domnode.scrollHeight;
+  }
+
+  //message from user to all other users
   handleUserInputMessage (e) {
     e.preventDefault();
     var message = this.refs.newMessage.value;
@@ -19,19 +31,17 @@ class ChatBox extends React.Component {
     //emit new message to all
     socket.emit('new message', message);
     
-    
-    //get new message from user and update it on their page
-    var msgsCopy = this.state.messages.slice();
-    msgsCopy.push(message);
-    this.setState({'messages': msgsCopy});
-
-    //scroll to bottom so user sees new message
-    var domnode = ReactDOM.findDOMNode(this.refs.chats);
-    ReactDOM.findDOMNode(this.refs.chats).scrollTop = domnode.scrollHeight;
+    //update messages on the page
+    this.updateMessages(message);
   }
 
+  //getting messages emmited from any users
   handleIncomingMessage (message) {
-    socket.on('new message', (message) => {   
+
+    socket.on('new message', (message) => { 
+      
+      //update messages on the page  
+      this.updateMessages(message);
     });
   }
 
