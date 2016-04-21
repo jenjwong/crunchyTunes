@@ -87,24 +87,29 @@ class App extends React.Component {
 
   render() {
     return (
-      <Layout>
-        <NavDrawer className='navDrawer' active={true}
-                  pinned={true}>
-          <PlayList/>
-        </NavDrawer>
-          <Panel>
-        <AppBar className="appBar" >
-          <SongPlayer track = {this.state.currentTrack} />
-        </AppBar>
-        <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-          <CardsContainer tracks = {this.state.tracks}
-            handleCardPlay = {this.handleCardPlay.bind(this)}
-          />
-        </Panel>
+      <div>
+        <Layout className='layout'>
+          <NavDrawer active={true}
+                    pinned={true}
+                    className='navDrawer'
+                    >
+            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
+          </NavDrawer>
+            <Panel>
+          <AppBar className="appBar" >
+            <SongPlayer track = {this.state.currentTrack} />
+          </AppBar>
+          <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+            <CardsContainer tracks = {this.state.tracks}
+              handleCardPlay = {this.handleCardPlay.bind(this)}
+            />
+          </Panel>
           <Sidebar className="sideBar" active={true} pinned={ true } width={ 5 }>
-            <ChatBox/>
+            <ChatBox username={ this.state.username }/>
         </Sidebar>
       </Layout>
+    <LoginModal />
+    </div>
     );
   }
 }

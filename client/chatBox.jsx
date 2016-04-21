@@ -6,7 +6,6 @@ class ChatBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newMessage: null,
       messages: [],
     }
   }
@@ -22,35 +21,38 @@ class ChatBox extends React.Component {
     ReactDOM.findDOMNode(this.refs.chats).scrollTop = domnode.scrollHeight;
   }
 
-  //message from user to all other users
-  handleUserInputMessage (e) {
-    e.preventDefault();
-    var message = this.refs.newMessage.value;
-    this.refs.newMessage.value = '';
+  componentDidMount () {
 
-    //emit new message to all
-    socket.emit('new message', message);
-    
-    //update messages on the page
-    this.updateMessages(message);
-  }
-
-  //getting messages emmited from any users
-  handleIncomingMessage (message) {
-
+    //getting messages emmited from any users
     socket.on('new message', (message) => { 
-      
-      //update messages on the page  
+       
       this.updateMessages(message);
     });
   }
+
+
+  //message from user to all other users
+  handleUserInputMessage (e) {
+    e.preventDefault();
+    var message = {message: this.refs.newMessage.value, username: this.props.username};
+    //reset field so user doesn't have to manually fix erase what they just wrote
+    this.refs.newMessage.value = '';
+
+    //emit new message to self and all
+    socket.emit('new message', message);
+    socket.broadcast.emit('new message', message);
+
+
+  }
+
+
 
   render() {
     return ( 
       <div ref='chats' className='chats'>
         <h1>Chat:</h1>
         {this.state.messages.map((message) => 
-          <p>{message}</p>
+          <p>{message.username}: {message.message}</p>
         )}
         <form className="commentForm" onSubmit={this.handleUserInputMessage.bind(this)}>
           <input ref='newMessage'/>

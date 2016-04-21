@@ -23,6 +23,7 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
+
       sessionData.userData.push({
         userName: username,
         userId: socket.id,
@@ -30,5 +31,15 @@ module.exports = (server) => {
         mood: 0,
       });
     });
+  
+    //handle messages to send from one to all
+    socket.on('new message', (message) => {
+      socket.emit('new message', message);
+      socket.broadcast.emit('new message', message);
+
+    });
+
+
   });
 };
+    
