@@ -10,7 +10,6 @@ import ChatBox from './chatBox.jsx'
 import io from 'socket.io-client';
 import PlayList from './playList.jsx';
 import { Layout, NavDrawer, Panel, Sidebar} from 'react-toolbox';
->>>>>>> Basic implementation of chat box
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 
