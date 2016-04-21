@@ -1,14 +1,29 @@
 module.exports = (server) => {
+  var sessionData = {
+    mood: 100,
+    userData: [],
+  };
+
+
   var io = require('socket.io')(server);
 
   io.on('connection', (socket) => {
     socket.on('add track', (track) => {
-      console.log(track);
       // emit to everybody-new track
       socket.emit('new track', track);
     });
+
+    socket.on('add user', (username) => {
+      socket.username = username;
+      socket.emit('user joined', {
+        username: socket.username,
+      });
+      sessionData.userData.push({ userName: username, userId: socket.id, role: 'pleeb', mood: 1 });
+      console.log(sessionData);
+    });
   });
 };
+
 
 // socket.on('new track', (track) => {
 // var updatedState = this.state.tracks.slice();
