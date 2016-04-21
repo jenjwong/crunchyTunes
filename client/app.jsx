@@ -107,7 +107,7 @@ class App extends React.Component {
             <ChatBox username={ this.state.username }/>
         </Sidebar>
       </Layout>
-    <LoginModal />
+      <LoginModal />
     </div>
     );
   }
