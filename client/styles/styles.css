@@ -22,6 +22,7 @@ body{
 }
 .list {
   padding: 0px !important;
+  overflow-y: scroll;
 }
 .listItem{
   height: 50px;
@@ -35,6 +36,7 @@ body{
 }
 .style__itemText___1-x0g {
   font-size: 12px !important;
+  white-space: normal;
 }
 .style__image___37utY{
   height:30px !important;
@@ -56,8 +58,10 @@ body{
 }
 .appBar {
   position: fixed;
+  width:50%;
 }
-
 .style__circular___2yZZn {
   padding-top: 40px !important;
 }
+
+
