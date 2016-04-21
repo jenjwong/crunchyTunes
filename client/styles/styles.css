@@ -19,7 +19,6 @@ body{
 }
 .listItem span {
   min-height:0px;
-
 }
 .list {
   padding: 0px !important;
@@ -37,7 +36,6 @@ body{
 }
 .style__itemText___1-x0g {
   font-size: 12px !important;
-/*  width:200px;*/
   white-space: normal;
 }
 .style__image___37utY{
@@ -62,7 +60,6 @@ body{
   position: fixed;
   width:50%;
 }
-
 .style__circular___2yZZn {
   padding-top: 40px !important;
 }
