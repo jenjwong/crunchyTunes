@@ -77,22 +77,25 @@ module.exports = (server) => {
     });
 
     socket.on('moodDislike', () => {
-      (console.log('moodDislike'))
+      console.log('moodDislike')
       _.each(sessionData.userData, function(item) {
         if (item.userId === socket.id) {
           item.mood = 0;
         }
       })
+      console.log(sessionData)
       updateCurrentMood();
     });
 
     function updateCurrentMood() {
+    console.log('inside update')
       var moodArray = _.pluck(sessionData.userData, 'mood');
-      var aggregateMood = _.reduce(moodArray, function(memo, num){ return memo + num; }, 0.001);
+      var aggregateMood = _.reduce(moodArray, function(memo, num){ return memo + num; }, 0);
       getTemperature(aggregateMood, sessionData.userData.length);
     }
 
     function getTemperature(aggregateMood, numUsers) {
+      console.log('inside temp')
       sessionData.temperature = Math.floor((aggregateMood/sessionData.userData.length) * 100);
 
       socket.emit('temperatureUpdate', {temperature: sessionData.temperature})
@@ -101,6 +104,7 @@ module.exports = (server) => {
       if ((sessionData.temperature) < 30 ) {
         _.each(sessionData.userData, function(person) {
               person.mood = 1;
+              console.log(person)
           });
           sessionData.temperature = 100;
 
