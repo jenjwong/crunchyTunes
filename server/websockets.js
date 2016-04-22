@@ -1,13 +1,17 @@
 module.exports = (server) => {
 
-
   var io = require('socket.io')(server);
   var sessionData = require('./sessionData.js');
+  var dataMethods = require('./dataMethods.js');
 
   io.on('connection', (socket) => {
+    var user;
     socket.on('add track', (track) => {
       // sessionData is a server side data store
-      sessionData.tracks.push(track);
+      dataMethods.addToStore(track, sessionData.tracks);
+      dataMethods.setRemovalInHalfHour(track, sessionData.tracks, function () {
+        socket.emit('remove from playlist', sessionData.tracks);
+      });
 
       socket.emit('new track', sessionData.tracks);
       socket.broadcast.emit('new track', sessionData.tracks);
@@ -16,6 +20,10 @@ module.exports = (server) => {
       sessionData.currentTrack = playing;
       socket.emit('update track', sessionData.currentTrack);
       socket.broadcast.emit('update track', sessionData.currentTrack);
+      // then delete track from playlist
+      dataMethods.removeFromStore(playing, sessionData.tracks);
+      socket.emit('remove from playlist', sessionData.tracks);
+      socket.broadcast.emit('remove from playlist', sessionData.tracks);
     });
 
     socket.on('add user', (username) => {
@@ -23,23 +31,24 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-
-      sessionData.userData.push({
+      user = {
         userName: username,
         userId: socket.id,
         role: 'pleeb',
         mood: 0,
-      });
+      };
+      dataMethods.addToStore(user, sessionData.userData);
     });
-  
-    //handle messages to send from one to all
+
+    socket.on('disconnect', () => {
+      dataMethods.removeFromStore(user, sessionData.userData);
+    });
+
+    // handle messages to send from one to all
     socket.on('new message', (message) => {
       socket.emit('new message', message);
       socket.broadcast.emit('new message', message);
-
     });
-
-
   });
 };
-    
+
