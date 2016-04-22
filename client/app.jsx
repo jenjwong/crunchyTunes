@@ -9,7 +9,7 @@ import Button from 'react-toolbox/lib/button';
 import ChatBox from './chatBox.jsx'
 import io from 'socket.io-client';
 import PlayList from './playList.jsx';
-import { Layout, NavDrawer, Panel, Sidebar} from 'react-toolbox';
+import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 
@@ -33,6 +33,7 @@ class App extends React.Component {
         apiSource: 'test',
       },
       searching: false,
+      sidebarPinned: false
     };
   }
 
@@ -82,6 +83,9 @@ class App extends React.Component {
       });
   }
 
+  toggleSidebar() {
+    this.setState({ sidebarPinned: !this.state.sidebarPinned});
+  }
 
 
   render() {
@@ -103,9 +107,11 @@ class App extends React.Component {
               handleCardPlay = {this.handleCardPlay.bind(this)}
             />
           </Panel>
-          <Sidebar className="sideBar" active={true} pinned={ true } width={ 5 }>
-            <ChatBox username={ this.state.username }/>
-        </Sidebar>
+          <Sidebar className='sideBar' pinned={ this.state.sidebarPinned } width={ 5 }>
+            <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username }/>
+          </Sidebar>
+          <div><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></div>
+
       </Layout>
       <LoginModal />
     </div>

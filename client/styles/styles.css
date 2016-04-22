@@ -67,24 +67,29 @@ body{
 
 .sideBar {
   position: fixed !important;
-  width: 200px !important;
-  height: 400px !important;
-  bottom: 0 !important;
 }
 
 .commentForm {
   position:absolute;
   bottom:0;
-  right: 0;
+  left: 0;
+  padding: 20px;
+  font-size: larger;
 }
 
 .chats {
   overflow: scroll;
+  padding: 20px;
 }
 
 .temperature {
   width: 50px;
   background-color: blue;
   height: 20px;
+}
+
+input {
+  border: 5px solid yellowgreen;
+  width: 300px;
 }
 

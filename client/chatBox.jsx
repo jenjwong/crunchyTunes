@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import socket from './websockets.js'
+import socket from './websockets.js';
+import {Button, IconButton} from 'react-toolbox/lib/button';
 
 class ChatBox extends React.Component {
   constructor(props) {
@@ -49,17 +50,15 @@ class ChatBox extends React.Component {
 
   render() {
     return ( 
-      <div>
-      <div className='temperature'></div>
       <div ref='chats' className='chats'>
-        <h1>Chat:</h1>
+        <div><IconButton icon='close' onClick={ this.props.toggleSidebar.bind(this)}/></div>
         {this.state.messages.map((message) => 
           <p>{message.username}: {message.message}</p>
         )}
         <form className="commentForm" onSubmit={this.handleUserInputMessage.bind(this)}>
-          <input ref='newMessage'/>
+          <span>Message:  </span>
+          <input label='Message' ref='newMessage'/>
         </form>
-      </div>
       </div>
     );
   }
