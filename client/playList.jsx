@@ -29,7 +29,7 @@ class PlayList extends React.Component {
   }
 
   handleTrackEmit(track) {
-    socket.emit('track play', track);
+    socket.emit('track play', {track: track, room: this.props.room});
   }
 
   render() {
