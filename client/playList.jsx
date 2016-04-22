@@ -37,6 +37,8 @@ class PlayList extends React.Component {
     return (
       <List selectable ripple className="list">
         <ListSubHeader caption="Dictator's Playlist" />
+         <div className='temperature'></div>
+
         {this.state.tracks.map((track) =>
           <ListItem
             caption={`${track.songTitle}\n${track.creator}`}

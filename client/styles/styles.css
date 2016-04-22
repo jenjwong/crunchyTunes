@@ -67,8 +67,9 @@ body{
 
 .sideBar {
   position: fixed !important;
-  width: 300px !important;
-  height: 300px !important;
+  width: 200px !important;
+  height: 400px !important;
+  bottom: 0 !important;
 }
 
 .commentForm {
@@ -79,5 +80,11 @@ body{
 
 .chats {
   overflow: scroll;
+}
+
+.temperature {
+  width: 50px;
+  background-color: blue;
+  height: 20px;
 }
 

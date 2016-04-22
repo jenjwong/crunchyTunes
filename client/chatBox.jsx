@@ -49,6 +49,8 @@ class ChatBox extends React.Component {
 
   render() {
     return ( 
+      <div>
+      <div className='temperature'></div>
       <div ref='chats' className='chats'>
         <h1>Chat:</h1>
         {this.state.messages.map((message) => 
@@ -57,6 +59,7 @@ class ChatBox extends React.Component {
         <form className="commentForm" onSubmit={this.handleUserInputMessage.bind(this)}>
           <input ref='newMessage'/>
         </form>
+      </div>
       </div>
     );
   }
