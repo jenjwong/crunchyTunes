@@ -26,6 +26,20 @@ module.exports = (server) => {
       dataMethods.removeFromStore(playing, sessionData.tracks);
       socket.emit('remove from playlist', sessionData.tracks);
       socket.broadcast.emit('remove from playlist', sessionData.tracks);
+  // var session = require('./sessionData.js');
+  // io.on('connection', (socket) => {
+  //   socket.on('add track', (data) => {
+  //     // sessionData is a server side data store
+  //     var room = data.room
+  //     session.sessionData[room].tracks.push(data.track);
+  //     socket.to(room).emit('new track', session.sessionData[room].tracks);
+  //     socket.to(room).broadcast.emit('new track', session.sessionData[room].tracks);
+  //   });
+
+  //   socket.on('track play', (playing, room) => {
+  //     session.sessionData.room.currentTrack = playing;
+  //     socket.to(room).emit('update track', sessionData.currentTrack);
+  //     socket.to(room).broadcast.emit('update track', sessionData.currentTrack);
     });
 
     // handle messages to send from one to all
@@ -67,7 +81,6 @@ module.exports = (server) => {
       }
       dataMethods.removeFromStore(user, sessionData.userData);
     });
-
       // need to handle dictator change on disconnect
 
     socket.on('mood change', (sentiment) => {
@@ -95,6 +108,19 @@ module.exports = (server) => {
           }
         });
       });
+    // io.on('disconnect', function(){
+    //   session.sessionData.room.userData.socket.id
+    // });
+
+    io.on('change room', (roomData) =>{
+      if (!session.sessionData.roomData.newRoom) {
+        session.makeRoomSession(roomData.newRoom);
+      }
+      socket.leave('currentRoom');
+      socket.join('room');
+      // session.sessionData.roomData.newRoom.userData.socket.id={}
+      // Object.assign(session.sessionData.roomData.newRoom.userData.socket.id, session.sessionData.roomData.oldRoom.userData.socket.id);
+      // delete session.sessionData.roomData.oldRoom.userData.socket.id;
     });
   });
 };
