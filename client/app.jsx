@@ -12,7 +12,7 @@ import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 import VotingComponent from './VotingComponent.jsx';
-
+import ChangeRoom from './changeRoom.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class App extends React.Component {
       dictator: '',
       isDictator: false,
       mood: 1,
+      room: '/',
 
       tracks: [
         {
@@ -118,22 +119,24 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Layout className='layout'>
-          <NavDrawer active={true}
-                    pinned={true}
-                    className='navDrawer'
+        <Layout className = 'layout'>
+          <NavDrawer active = {true}
+                    pinned = {true}
+                    className = 'navDrawer'
                     >
-            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
+            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} room = {this.state.room} />
           </NavDrawer>
             <Panel>
           <AppBar className="appBar" >
-            <SongPlayer track = {this.state.currentTrack} />
+            <SongPlayer track = {this.state.currentTrack} room = {this.state.room} /> 
+            <ChangeRoom userId = {this.state.userId} room = {this.state.room}/>
           </AppBar>
           <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
           <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
           <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
             <CardsContainer tracks = {this.state.tracks}
               handleCardPlay = {this.handleCardPlay.bind(this)}
+              room = {this.state.room}
             />
           </Panel>
           <Sidebar className='sideBar' pinned={ this.state.sidebarPinned } width={ 5 }>
