@@ -35,7 +35,7 @@ class VotingComponent extends React.Component {
     return (
   <Card style={{width: '350px'}} raised>
   <CardTitle
-    title= {this.state.temperature}
+    title={'The pleebs are ' + this.state.temperature + '% content'}
     subtitle= {dummyText}
   />
   <CardActions>

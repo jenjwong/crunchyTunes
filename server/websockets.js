@@ -94,18 +94,17 @@ module.exports = (server) => {
 
     function getTemperature(aggregateMood, numUsers) {
       sessionData.temperature = Math.floor((aggregateMood/sessionData.userData.length) * 100);
-      console.log(sessionData.temperature)
+
       socket.emit('temperatureUpdate', {temperature: sessionData.temperature})
       socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature})
 
-      if ((sessionData.temperature) < 50 ) {
-        newDictator();
+      if ((sessionData.temperature) < 30 ) {
         _.each(sessionData.userData, function(person) {
               person.mood = 1;
-              console.log('inside each',person.mood)
-              console.log('ASSIGN NEW DICTATOR')
           });
+          sessionData.temperature = 100;
 
+          newDictator();
           socket.emit('temperatureUpdate', {temperature: sessionData.temperature});
           socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature});
       }
