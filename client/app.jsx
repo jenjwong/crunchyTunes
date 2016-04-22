@@ -12,6 +12,8 @@ import PlayList from './playList.jsx';
 import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
+import VotingComponent from './VotingComponent.jsx';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -42,6 +44,9 @@ class App extends React.Component {
       this.setState(
         { username: user.username,
           userId: socket.id });
+    });
+    socket.on('assignDictator', (track) => {
+      console.log('i am dictator', this.state.userId)
     });
     socket.on('update track', (track) => {
       this.handleCardPlay(track);
@@ -96,6 +101,7 @@ class App extends React.Component {
                     pinned={true}
                     className='navDrawer'
                     >
+            <VotingComponent appState = {this.state}/>
             <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
           </NavDrawer>
             <Panel>

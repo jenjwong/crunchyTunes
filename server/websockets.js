@@ -16,6 +16,7 @@ module.exports = (server) => {
       socket.emit('new track', sessionData.tracks);
       socket.broadcast.emit('new track', sessionData.tracks);
     });
+
     socket.on('track play', (playing) => {
       sessionData.currentTrack = playing;
       socket.emit('update track', sessionData.currentTrack);
@@ -26,11 +27,18 @@ module.exports = (server) => {
       socket.broadcast.emit('remove from playlist', sessionData.tracks);
     });
 
+    //handle messages to send from one to all
+    socket.on('new message', (message) => {
+      socket.emit('new message', message);
+      socket.broadcast.emit('new message', message);
+    });
+
     socket.on('add user', (username) => {
       socket.username = username;
       socket.emit('user joined', {
         username: socket.username,
       });
+<<<<<<< 90db97c7e36f44ce51fb490704b9d6e70f0557c0
       user = {
         userName: username,
         userId: socket.id,
@@ -52,3 +60,67 @@ module.exports = (server) => {
   });
 };
 
+// prerefactor below
+      sessionData.userData.push({ userName: username, userId: socket.id, role: 'pleeb', mood: 1 });
+        if (sessionData.userData.length === 1) {
+            newDictator();
+        }
+      });
+
+    socket.on('moodLike', () => {
+      _.each(sessionData.userData, function(item) {
+        if (item.userId === socket.id) {
+          item.mood = 1;
+        }
+      })
+      updateCurrentMood();
+    });
+
+    socket.on('moodDislike', () => {
+      (console.log('moodDislike'))
+      _.each(sessionData.userData, function(item) {
+        if (item.userId === socket.id) {
+          item.mood = 0;
+        }
+      })
+      updateCurrentMood();
+    });
+
+    function updateCurrentMood() {
+      var moodArray = _.pluck(sessionData.userData, 'mood');
+      var aggregateMood = _.reduce(moodArray, function(memo, num){ return memo + num; }, 0.001);
+      getTemperature(aggregateMood, sessionData.userData.length);
+    }
+
+    function getTemperature(aggregateMood, numUsers) {
+      sessionData.temperature = Math.floor((aggregateMood/sessionData.userData.length) * 100);
+      console.log(sessionData.temperature)
+      socket.emit('temperatureUpdate', {temperature: sessionData.temperature})
+      socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature})
+
+      if ((sessionData.temperature) < 50 ) {
+        newDictator();
+        _.each(sessionData.userData, function(person) {
+              person.mood = 1;
+              console.log('inside each',person.mood)
+              console.log('ASSIGN NEW DICTATOR')
+          });
+
+          socket.emit('temperatureUpdate', {temperature: sessionData.temperature});
+          socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature});
+      }
+    }
+
+    function newDictator() {
+      var newDictator = sessionData.userData[Math.floor(Math.random() * sessionData.userData.length)];
+      sessionData.dictator = newDictator;
+       // socket.emit('newDictator', {});
+       if (io.sockets.connected[sessionData.dictator.userId]) {
+         io.sockets.connected[sessionData.dictator.userId].emit('assignDictator', 'for your eyes only');
+         console.log('DICTATOR ACCORDING TO OBJECT', sessionData.dictator.userId)
+         console.log('ALLDATA', sessionData)
+       }
+    }
+
+  });
+};
