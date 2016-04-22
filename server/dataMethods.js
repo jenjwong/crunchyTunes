@@ -1,6 +1,4 @@
 var _ = require('lodash');
-var EventEmitter = require('events');
-var socket = require('./websockets.js');
 
 var dataMethods = {
   setRemovalInHalfHour: (track, tracks, callback) => {
@@ -24,6 +22,48 @@ var dataMethods = {
       console.log('we only currently support adding to arrays');
     }
   },
+
+  updateObjPropInStore: (target, store, callback) => {
+    for (var i = 0; i < store.length; i++) {
+      if (_.isMatch(store[i], target)) {
+        callback(store[i])
+        break;
+      }
+    }
+  },
+
+  getMood: (store, callback) => {
+    var moodArray = _.pluck(store, 'mood');
+    var totalMood = _.reduce(moodArray, (memo, num) => memo + num, 0);
+    callback(totalMood);
+  },
+
+  setTemperature: (store, mood, callback) => {
+    var temperature = Math.floor((mood/store.userData.length) * 100);
+    store.temperature = temperature;
+
+  },
+
+  isDictatorSafe: (mood) => {
+    if (mood > 75) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+
+  assignDictator: (store) => {
+    var index = Math.floor(Math.random() * store.userData.length);
+    var newDictator = store.userData[index];
+    store.dictator = newDictator;
+  },
+
+  resetPlayerMoods: (store) => {
+    _.each(store, (player) => {
+      player.mood = 0;
+    });
+  },
+
 };
 
 module.exports = dataMethods;

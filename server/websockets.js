@@ -6,6 +6,7 @@ module.exports = (server) => {
 
   io.on('connection', (socket) => {
     var user;
+
     socket.on('add track', (track) => {
       // sessionData is a server side data store
       dataMethods.addToStore(track, sessionData.tracks);
@@ -38,7 +39,6 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-<<<<<<< 90db97c7e36f44ce51fb490704b9d6e70f0557c0
       user = {
         userName: username,
         userId: socket.id,
@@ -57,73 +57,37 @@ module.exports = (server) => {
       socket.emit('new message', message);
       socket.broadcast.emit('new message', message);
     });
-  });
-};
 
-// prerefactor below
-      sessionData.userData.push({ userName: username, userId: socket.id, role: 'pleeb', mood: 1 });
-        if (sessionData.userData.length === 1) {
-            newDictator();
-        }
+      // need to handle dictator change on disconnect
+
+    socket.on('moodChange', (sentiment) => {
+      var target = {userId: socket.id};
+      dataMethods.updateObjPropInStore(target, sessionData.userData, (user) => {
+        user.mood = sentiment;
       });
 
-    socket.on('moodLike', () => {
-      _.each(sessionData.userData, function(item) {
-        if (item.userId === socket.id) {
-          item.mood = 1;
-        }
-      })
-      updateCurrentMood();
+      dataMethods.getMood(sessionData.userData, (mood) => {
+        dataMethods.setTemperature(sessionData, mood);
+
+        socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature});
+        socket.emit('temperatureUpdate', {temperature: sessionData.temperature});
+        dataMethods.resetPlayerMoods(sessionData.userData);
+
+        dataMethods.getMood(sessionData.userData, (mood) => {
+          dataMethods.setTemperature(sessionData, mood);
+          var isDictatorSafe = dataMethods.isDictatorSafe(mood);
+          if (!isDictatorSafe) {
+            dataMethods.assignDictator(sessionData);
+            var dictatorId = sessionData.dictator.userId;
+            if (io.sockets.connected[dictatorId]) {
+              io.sockets.connected[dictatorId].emit('assignDictator');
+              // there is a chance the same dictator will be picked twice
+              // gahh math.random
+              io.sockets.connected[dictatorId].broadcast.emit('assignDictator');
+            }
+          }
+        });
+      });
     });
-
-    socket.on('moodDislike', () => {
-      console.log('moodDislike')
-      _.each(sessionData.userData, function(item) {
-        if (item.userId === socket.id) {
-          item.mood = 0;
-        }
-      })
-      console.log(sessionData)
-      updateCurrentMood();
-    });
-
-    function updateCurrentMood() {
-    console.log('inside update')
-      var moodArray = _.pluck(sessionData.userData, 'mood');
-      var aggregateMood = _.reduce(moodArray, function(memo, num){ return memo + num; }, 0);
-      getTemperature(aggregateMood, sessionData.userData.length);
-    }
-
-    function getTemperature(aggregateMood, numUsers) {
-      console.log('inside temp')
-      sessionData.temperature = Math.floor((aggregateMood/sessionData.userData.length) * 100);
-
-      socket.emit('temperatureUpdate', {temperature: sessionData.temperature})
-      socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature})
-
-      if ((sessionData.temperature) < 30 ) {
-        _.each(sessionData.userData, function(person) {
-              person.mood = 1;
-              console.log(person)
-          });
-          sessionData.temperature = 100;
-
-          newDictator();
-          socket.emit('temperatureUpdate', {temperature: sessionData.temperature});
-          socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature});
-      }
-    }
-
-    function newDictator() {
-      var newDictator = sessionData.userData[Math.floor(Math.random() * sessionData.userData.length)];
-      sessionData.dictator = newDictator;
-       // socket.emit('newDictator', {});
-       if (io.sockets.connected[sessionData.dictator.userId]) {
-         io.sockets.connected[sessionData.dictator.userId].emit('assignDictator', 'for your eyes only');
-         console.log('DICTATOR ACCORDING TO OBJECT', sessionData.dictator.userId)
-         console.log('ALLDATA', sessionData)
-       }
-    }
-
   });
 };

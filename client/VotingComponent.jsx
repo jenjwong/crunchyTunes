@@ -15,20 +15,11 @@ class VotingComponent extends React.Component {
     };
   }
 
-
   componentDidMount() {
   socket.on('temperatureUpdate', (temp) => {
     console.log('setTem', temp)
     this.setState({temperature: temp.temperature})
   })
-  }
-
-  likeHandler() {
-    socket.emit('moodLike');
-  }
-
-  dislikeHandler() {
-    socket.emit('moodDislike');
   }
 
   render() {
@@ -39,8 +30,7 @@ class VotingComponent extends React.Component {
     subtitle= {dummyText}
   />
   <CardActions>
-  <Button label="Like"  icon='favorite' accent onClick={ this.likeHandler.bind(this) } />
-  <Button label="Not so much" onClick={ this.dislikeHandler.bind(this) } />
+
   </CardActions>
   </Card>
 

@@ -4,7 +4,6 @@ import SongPlayer from './songplayer.jsx';
 import CardsContainer from './cardsContainer.jsx';
 import AppBar from 'react-toolbox/lib/app_bar';
 import queryAll from './queryAll.js';
-import _ from 'underscore';
 import Button from 'react-toolbox/lib/button';
 import ChatBox from './chatBox.jsx'
 import io from 'socket.io-client';
@@ -19,6 +18,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      temperature: '',
       username: '',
       userId: '',
       role: 'pleeb',
@@ -52,6 +52,11 @@ class App extends React.Component {
     socket.on('update track', (track) => {
       this.handleCardPlay(track);
     });
+
+    socket.on('temperatureUpdate', (temp) => {
+      console.log('setTem', temp)
+      this.setState({temperature: temp.temperature})
+    })
 
     const self = this;
     queryAll({ query: 'Kanye',
@@ -93,6 +98,15 @@ class App extends React.Component {
     this.setState({ sidebarPinned: !this.state.sidebarPinned});
   }
 
+  moodHandler(sentiment) {
+    var mood = this.state.mood; // 0 or 1
+    if (mood !== sentiment) {
+      var oppositeMood = !!sentiment ? 0 : 1;
+      console.log('inside moodHandler');
+      this.setState({mood: oppositeMood});
+      socket.emit('moodChange', this.state.mood);
+    }
+  }
 
   render() {
     return (
@@ -109,6 +123,8 @@ class App extends React.Component {
             <SongPlayer track = {this.state.currentTrack} />
           </AppBar>
           <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+          <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
+          <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
             <CardsContainer tracks = {this.state.tracks}
               handleCardPlay = {this.handleCardPlay.bind(this)}
             />
