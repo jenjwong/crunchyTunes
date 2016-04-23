@@ -12,6 +12,7 @@ import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 import ChangeRoom from './changeRoom.jsx';
+import artists from './artists.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -70,7 +71,8 @@ class App extends React.Component {
     });
 
     const self = this;
-    queryAll({ query: 'Grammatik',
+    var randomArtist = artists[Math.floor(Math.random() * artists.length)];
+    queryAll({ query: randomArtist,
       })
       .then((results) => {
         console.log(results);
