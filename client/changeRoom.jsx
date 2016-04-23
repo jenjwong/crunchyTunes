@@ -1,15 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import socket from './websockets.js'
-import currentRoom from './socketRoom'
-
+import {Button, IconButton} from 'react-toolbox/lib/button';
+import Input from 'react-toolbox/lib/input';
 
 class ChangeRoom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
-    }
+      room:''
+    };
   }
 
 
@@ -22,28 +21,26 @@ class ChangeRoom extends React.Component {
     });
   }
 
-
-  //message from user to all other users
-  handleSwitchRoom (e) {
-    e.preventDefault();
-    var room = this.refs.newRoom.value;
-    //reset field so user doesn't have to manually fix erase what they just wrote
-    this.refs.newRoom.value = '';
-
-    //emit new message to self and all
-    socket.emit('change room', {oldRoom:this.props.room, newRoom:room})
+  handleInputChange (room) {
+    console.log(room);
+    this.setState({
+      room: room
+    });
 
   }
+
+
+  //message from user to all other users
+
 
 
 
   render() {
     return ( 
       <div ref='chats' className='chats'>
-        <h1>ChangeRoom</h1>
-        <form className="" onSubmit={this.handleSwitchRoom.bind(this)}>
-          <input ref='newRoom'/>
-        </form>
+        <Input type="text" style={{ width: '200px' }} label="" icon=""
+        onChange={(value) =>this.handleInputChange(value)}  />
+        <Button label='Change Room' raised onMouseUp={() => this.props.handleRoomChange(this.state.room)}/>
       </div>
     );
   }
