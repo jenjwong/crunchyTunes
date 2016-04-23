@@ -1,5 +1,5 @@
-exports.sessionData = {
-  '/':{
+sessionData = {
+  'HR41':{
     temperature: 0,
     userData: [],
     tracks: [],
