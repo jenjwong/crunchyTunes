@@ -24,7 +24,7 @@ class App extends React.Component {
       dictator: '',
       isDictator: false,
       mood: 1,
-      room: '/',
+      room: 'HR41',
 
       tracks: [
         {
@@ -59,6 +59,7 @@ class App extends React.Component {
     });
 
     socket.on('update track', (track) => {
+      console.log(track);
       this.handleCardPlay(track);
     });
 
@@ -107,6 +108,15 @@ class App extends React.Component {
     this.setState({ sidebarPinned: !this.state.sidebarPinned});
   }
 
+    handleRoomChange (room) {
+    console.log(room);
+    let oldRoom = this.state.room;
+    this.setState({
+      room: room
+    });
+    socket.emit('change room', {oldRoom:oldRoom, newRoom:room})
+  }
+
   moodHandler(sentiment) {
     var mood = this.state.mood; // 0 or 1
     if (mood !== sentiment) {
@@ -114,6 +124,7 @@ class App extends React.Component {
       this.setState({ mood: oppositeMood });
       socket.emit('mood change', this.state.mood);
     }
+    
   }
 
   render() {
@@ -129,7 +140,9 @@ class App extends React.Component {
             <Panel>
           <AppBar className="appBar" >
             <SongPlayer track = {this.state.currentTrack} room = {this.state.room} /> 
-            <ChangeRoom userId = {this.state.userId} room = {this.state.room}/>
+            <ChangeRoom userId = {this.state.userId} 
+              handleRoomChange={this.handleRoomChange.bind(this)} 
+              room = {this.state.room}/>
           </AppBar>
           <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
           <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
