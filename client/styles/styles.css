@@ -34,26 +34,9 @@ body{
   margin: 0px;
   padding: 0px;
 }
-.style__itemText___1-x0g {
-  font-size: 12px !important;
-  white-space: normal;
-}
-.style__image___37utY{
-  height:30px !important;
-  width:30px !important;
-}
-.style__avatar___3mVo5{
-  height:30px !important;
-  width:30px !important;
-}
-/* handles shadow overlay */
-.style__itemContentRoot___342aU {
-  height:50px !important;
-}
 .navBar {
   width: 700px;
 }
-
 .search-bar {
   margin-top:100px;
 }
@@ -64,11 +47,25 @@ body{
 .style__circular___2yZZn {
   padding-top: 40px !important;
 }
-
+.style__itemText___1-x0g {
+  font-size: 12px !important;
+  white-space: normal;
+}
+.style__image___37utY {
+  height:30px !important;
+  width:30px !important;
+}
+.style__avatar___3mVo5 {
+  height:30px !important;
+  width:30px !important;
+}
+ /* handles shadow overlay */
+.style__itemContentRoot___342aU {
+  height:50px !important;
+}
 .sideBar {
   position: fixed !important;
 }
-
 .commentForm {
   position:absolute;
   bottom:0;
@@ -76,20 +73,16 @@ body{
   padding: 20px;
   font-size: larger;
 }
-
 .chats {
   overflow: scroll;
   padding: 20px;
 }
-
 .temperature {
   width: 50px;
   background-color: blue;
   height: 20px;
 }
-
 input {
   border: 5px solid yellowgreen;
   width: 300px;
 }
-
