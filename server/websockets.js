@@ -52,7 +52,7 @@ module.exports = (server) => {
       dataMethods.addToStore(user, sessionData[room].userData);
     });
 
-    socket.on('disconnect', () => {
+    var removeDictator = () => {
       // handles undefined user for disconnects before
       // joining with the modal
       var isDictator = user ? user.isDictator : false;
@@ -67,7 +67,11 @@ module.exports = (server) => {
           // io.sockets.connected[dictatorId].broadcast.emit('assign dictator');
         }
       }
-      dataMethods.removeFromStore(user, sessionData[room].userData);
+      dataMethods.removeFromStore(user, sessionData[room].userData);      
+    }
+
+    socket.on('disconnect', () => {
+      removeDictator();
     });
       // need to handle dictator change on disconnect
 
@@ -105,6 +109,7 @@ module.exports = (server) => {
     socket.on('change room', (roomData) =>{
       if (!sessionData[roomData.newRoom]) {
         dataMethods.addRoomSession(roomData.newRoom);
+
       }
       socket.leave(roomData.oldRoom);
       dataMethods.removeFromStore(user, sessionData[roomData.oldRoom].userData);

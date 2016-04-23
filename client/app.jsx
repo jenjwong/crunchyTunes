@@ -11,7 +11,6 @@ import PlayList from './playList.jsx';
 import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
-import VotingComponent from './VotingComponent.jsx';
 import ChangeRoom from './changeRoom.jsx';
 
 class App extends React.Component {
@@ -145,26 +144,29 @@ class App extends React.Component {
               <Button label="Overthrow" onClick={ () => this.moodHandler(1) } />
             </div>
             <SongPlayer track = {this.state.currentTrack} />
-            <ChangeRoom userId = {this.state.userId} 
-              handleRoomChange={this.handleRoomChange.bind(this)} 
-              room = {this.state.room}/>
             <span className='chatButton'><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></span>
           </AppBar>
           <NavDrawer active={true}
                     pinned={true}
                     className='navDrawer'
                     >
-            <PlayList temperature={this.state.temperature} handleCardPlay = {this.handleCardPlay.bind(this)} />
+            <PlayList temperature={this.state.temperature} handleCardPlay = {this.handleCardPlay.bind(this)} isDictator={ this.state.isDictator }/>
           </NavDrawer>
           <Panel>
+            <div>
             <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+            <span><ChangeRoom userId = {this.state.userId} 
+              handleRoomChange={this.handleRoomChange.bind(this)} 
+              room = {this.state.room}/></span>
+            </div>
               <CardsContainer tracks = {this.state.tracks}
                 handleCardPlay = {this.handleCardPlay.bind(this)}
                 room = {this.state.room}
+                isDictator = {this.state.isDictator}
             />
           </Panel>
           <Sidebar className='sideBar' pinned={ this.state.sidebarPinned } width={ 5 }>
-            <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username }/>
+            <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username } />
           </Sidebar>
           <div><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></div>
         </Layout>

@@ -32,7 +32,9 @@ class PlayList extends React.Component {
   }
 
   handleTrackEmit(track) {
-    socket.emit('track play', track);
+    if(this.props.isDictator){
+      socket.emit('track play', track);
+    }
   }
 
 
@@ -58,7 +60,7 @@ class PlayList extends React.Component {
   render() {  
 
     return (
-      <List selectable ripple className="list">
+      <List selectable={this.props.isDictator} ripple={this.props.isDictator} className="list">
         <ListSubHeader caption="Dictator's Playlist" />
          <div style={{width: this.props.temperature*2.2, backgroundColor: this.state.color, maxWidth: '280px'}} className='temperature'></div>
          {this.state.tracks.map((track) =>

@@ -10,12 +10,12 @@ class CardsContainer extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    // socket listeners go here
-  }
 
   handleBuildPlaylist(track) {
-    socket.emit('add track', track );
+    console.log('build playlist dictator', this.props.isDictator);
+    if (!this.props.isDictator) {
+      socket.emit('add track', track );
+    }
   }
 
   render() {
