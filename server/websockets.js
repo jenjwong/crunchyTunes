@@ -99,13 +99,6 @@ module.exports = (server) => {
         });
       });
     });
-    // handle messages to send from one to all
-    //handle messages to send from one to all
-    socket.on('new message', (message) => {
-      socket.emit('new message', message);
-      socket.broadcast.emit('new message', message);
-    });
-
     socket.on('change room', (roomData) =>{
       if (!sessionData[roomData.newRoom]) {
         dataMethods.addRoomSession(roomData.newRoom);
