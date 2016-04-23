@@ -76,7 +76,7 @@ var dataMethods = {
       player.mood = 0;
     });
   },
-  
+
   addRoomSession: (roomName) => {
     sessionData[roomName] = {
     temperature: 0,
@@ -84,8 +84,8 @@ var dataMethods = {
     tracks: [],
     currentTrack: null,
     room: roomName
-  };
-
+    };
+  }
 };
 
 
