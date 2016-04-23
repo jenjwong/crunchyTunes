@@ -1,14 +1,16 @@
 # Music Dictator: a Gamefied Music Player
-Become the next music dictator! The music dictator always gets to pick the tunes, but watchout, if the populace doesn't like the songs the dictator gets overthrown. 
+Become the next music dictator! The music dictator always gets to pick the tunes, but watchout, if the populace doesn't like the songs, the dictator gets overthrown. 
 
 ## Stack
-Music Dictator is built using Sockets Io, React and Node JS. 
+* React
+* Express/Node
+* Sockets.IO
 
 ## Team
 
-  - __Product Owner__: Mark Tynes
-  - __Scrum Master__: Jen Wong
-  - __Development Team Members__: Lizzy Harris, Ken Montgomery
+  - __Product Owner__: [Mark Tyneway](https://github.com/Tynes)
+  - __Scrum Master__: [Jen Wong](https://github.com/jenjwong)
+  - __Development Team Members__: [Lizzy Harris](https://github.com/CodeLizards), [Ken Montgomery](https://github.com/BigBroken)
 
 ## Table of Contents
 
@@ -22,7 +24,7 @@ Music Dictator is built using Sockets Io, React and Node JS.
 
 ## Usage
 
-Checkout the app in action [here](http://crunchytunes.com)!
+Checkout the app in action [here](http://plebsmusic.com)!
 
 ## Requirements
 
@@ -62,12 +64,9 @@ Navigate your browser to localhost: 8080 to view the app.
 
 View the project roadmap [here](https://waffle.io/unassumingQuasar/crunchyTunes)
 
-
-
 ### Progress
 
 [![Throughput Graph](https://graphs.waffle.io/unassumingQuasar/crunchyTunes/throughput.svg)](https://waffle.io/unassumingQuasar/crunchyTunes/metrics/throughput)
-
 
 ## Contributing
 
