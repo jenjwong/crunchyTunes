@@ -54,7 +54,8 @@ class PlayList extends React.Component {
 
 
 
-  render() {
+  render() {  
+
     return (
       <List selectable ripple className="list">
         <ListSubHeader caption="Dictator's Playlist" />
@@ -65,6 +66,7 @@ class PlayList extends React.Component {
             avatar={track.imagePath}
             onClick={() => this.handleTrackEmit(track)}
           />
+
         )}
       </List>
     );
