@@ -3,32 +3,33 @@ module.exports = (server) => {
   var io = require('socket.io')(server);
   var sessionData = require('./sessionData.js');
   var dataMethods = require('./dataMethods.js');
-  var room = 'HR41';
   io.on('connection', (socket) => {
     var user;
+    var room = 'HR41';
+
     socket.join(room);
 
     socket.emit('new track', sessionData[room].tracks);
 
 
-    socket.on('add track', (data) => {
+    socket.on('add track', (track) => {
       // sessionData is a server side data store
-      dataMethods.addToStore(data.track, sessionData[data.room].tracks);
-      dataMethods.setRemovalInHalfHour(data.track, sessionData[data.room], function () {
-        // console.log('inside removal', sessionData[data.room]);
-        io.to(data.room).emit('remove from playlist', sessionData[data.room].tracks);
-        // io.broadcast(data.room).emit('remove from playlist', sessionData[data.room].tracks);
+      dataMethods.addToStore(track, sessionData[room].tracks);
+      dataMethods.setRemovalInHalfHour(track, sessionData[room], function () {
+        // console.log('inside removal', sessionData[room]);
+        io.to(room).emit('remove from playlist', sessionData[room].tracks);
+        // io.broadcast(room).emit('remove from playlist', sessionData[room].tracks);
       });
-      io.to(data.room).emit('new track', sessionData[data.room].tracks);
-      // io.broadcast(data.room).emit('new track', sessionData[data.room].tracks);
+      io.to(room).emit('new track', sessionData[room].tracks);
+      // io.broadcast(room).emit('new track', sessionData[room].tracks);
     });
 
-    socket.on('track play', (data) => {
-      sessionData[data.room].currentTrack = data.track;
-      io.to(data.room).emit('update track', sessionData[data.room].currentTrack);
+    socket.on('track play', (track) => {
+      sessionData[room].currentTrack = track;
+      io.to(room).emit('update track', sessionData[room].currentTrack);
       // then delete track from playlist
-      dataMethods.removeFromStore(data.track, sessionData[data.room].tracks);
-      io.to(data.room).emit('remove from playlist', sessionData[data.room].tracks);
+      dataMethods.removeFromStore(track, sessionData[room].tracks);
+      io.to(room).emit('remove from playlist', sessionData[room].tracks);
     });
 
     // handle messages to send from one to all
@@ -49,7 +50,7 @@ module.exports = (server) => {
       if (sessionData[room].userData.length === 0) {
         socket.emit('assign dictator');
         user.isDictator = true;
-        sessionData.dictator = user;
+        sessionData[room].dictator = user;
       }
       dataMethods.addToStore(user, sessionData[room].userData);
 
@@ -60,8 +61,8 @@ module.exports = (server) => {
       // joining with the modal
       var isDictator = user ? user.isDictator : false;
       if (isDictator) {
-        dataMethods.assignDictator(user, sessionData);
-        var dictatorId = sessionData.dictator.userId;
+        dataMethods.assignDictator(user, sessionData[room]);
+        var dictatorId = sessionData[room].dictator.userId;
         if (io.sockets.connected[dictatorId]) {
           io.to(dictatorId).emit('assign dictator');
           // i do not think the line below is necessary but haven't tested extensively
@@ -74,23 +75,23 @@ module.exports = (server) => {
 
     socket.on('mood change', (sentiment) => {
       var target = { userId: socket.id };
-      dataMethods.updateObjPropInStore(target, sessionData.userData, (user) => {
+      dataMethods.updateObjPropInStore(target, sessionData[room].userData, (user) => {
         user.mood = sentiment;
       });
 
-      dataMethods.getMoods(sessionData.userData, (mood) => {
-        dataMethods.setTemperature(sessionData, mood);
+      dataMethods.getMoods(sessionData[room].userData, (mood) => {
+        dataMethods.setTemperature(sessionData[room], mood);
 
-        socket.broadcast.emit('temperatureUpdate', { temperature: sessionData.temperature });
-        socket.emit('temperatureUpdate', { temperature: sessionData.temperature });
-        dataMethods.getMoods(sessionData.userData, (moods) => {
-          dataMethods.setTemperature(sessionData, moods);
+        socket.broadcast.emit('temperatureUpdate', { temperature: sessionData[room].temperature });
+        socket.emit('temperatureUpdate', { temperature: sessionData[room].temperature });
+        dataMethods.getMoods(sessionData[room].userData, (moods) => {
+          dataMethods.setTemperature(sessionData[room], moods);
           var isDictatorSafe = dataMethods.isDictatorSafe(mood);
           if (!isDictatorSafe) {
-            dataMethods.assignDictator(sessionData);
-            dataMethods.resetPlayerMoods(sessionData.userData);
+            dataMethods.assignDictator(sessionData[room]);
+            dataMethods.resetPlayerMoods(sessionData[room].userData);
 
-            var dictatorId = sessionData.dictator.userId;
+            var dictatorId = sessionData[room].dictator.userId;
             if (io.sockets.connected[dictatorId]) {
               io.sockets.connected[dictatorId].emit('assign dictator');
             }
@@ -107,14 +108,14 @@ module.exports = (server) => {
 
     socket.on('change room', (roomData) =>{
       if (!sessionData[roomData.newRoom]) {
-        sessionData.addRoomSession(roomData.newRoom);
+        dataMethods.addRoomSession(roomData.newRoom);
       }
       socket.leave(roomData.oldRoom);
       dataMethods.removeFromStore(user, sessionData[roomData.oldRoom].userData);
       socket.join(roomData.newRoom);
       room = roomData.newRoom;
-      dataMethods.addToStore(user, sessionData[roomData.newRoom].userData);
-      socket.emit('new track', sessionData[roomData.newRoom].tracks)
+      dataMethods.addToStore(user, sessionData[room].userData);
+      socket.emit('new track', sessionData[room].tracks)
 
 
     });
