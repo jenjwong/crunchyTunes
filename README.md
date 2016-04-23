@@ -1,11 +1,11 @@
-# crunchy-tunes
-A music player and aggregator built on the Spotify, YouTube and Soundcloud APIs.
+# Music Dictator: a Gamefied Music Playlist
+Become the next music dictator! The music dictator always gets to pick the tunes, but watchout, if the populace doesn't like the songs the dictator gets overthrown. 
 
 ## Team
 
-  - __Product Owner__: Kevin Meraz
-  - __Scrum Master__: Brandon Ramirez
-  - __Development Team Members__: Nemo Baker, Ashwin Ravi, Brandon Ramirez, Kevin Meraz
+  - __Product Owner__: Mark Tynes
+  - __Scrum Master__: Jen Wong
+  - __Development Team Members__: Lizzy Harris, Ken Montgomery
 
 ## Table of Contents
 
@@ -53,19 +53,16 @@ Navigate your browser to localhost: 8080 to view the app.
 ```
 
 ### Current Build Health [![Build Status](https://travis-ci.org/ImmaculateHangover/crunchy-tunes.svg?branch=master)](https://travis-ci.org/ImmaculateHangover/crunchy-tunes)
-View the build [history]](https://travis-ci.org/ImmaculateHangover/crunchy-tunes/builds)
 
 ### Roadmap
 
-View the project roadmap [here](https://waffle.io/ImmaculateHangover/crunchy-tunes)
-[![Stories in 'Backlog'](https://badge.waffle.io/ImmaculateHangover/crunchy-tunes.svg?label=Backlog&title=Backlog)](http://waffle.io/ImmaculateHangover/crunchy-tunes)
-[![Stories in 'Ready'](https://badge.waffle.io/ImmaculateHangover/crunchy-tunes.svg?label=Ready&title=Ready)](http://waffle.io/ImmaculateHangover/crunchy-tunes)
-[![Stories in 'In Progress'](https://badge.waffle.io/ImmaculateHangover/crunchy-tunes.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/ImmaculateHangover/crunchy-tunes)
+View the project roadmap [here](https://waffle.io/unassumingQuasar/crunchyTunes)
+
 
 
 ### Progress
 
-[![Throughput Graph](https://graphs.waffle.io/ImmaculateHangover/crunchy-tunes/throughput.svg)](https://waffle.io/ImmaculateHangover/crunchy-tunes/metrics)
+[![Throughput Graph](https://waffle.io/unassumingQuasar/crunchyTunes/metrics/throughput)](https://waffle.io/unassumingQuasar/crunchyTunes/metrics/)
 
 
 ## Contributing
