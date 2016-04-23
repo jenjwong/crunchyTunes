@@ -8,7 +8,7 @@ import remixArray from './remixArray.js';
 const queryAll = ({ query }) => {
   return new Promise((resolve, reject) => {
     const queryEach = [
-      searchSpotify({ query }),
+      // searchSpotify({ query }),
       searchSoundCloud({ query }),
       searchYouTube({ query }),
     ];
