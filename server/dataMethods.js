@@ -8,7 +8,7 @@ var dataMethods = {
     setTimeout(() => {
       dataMethods.removeFromStore(track, store.tracks);
       callback();
-    }, 180000);
+    }, 1800000);
   },
 
   removeFromStore: (item, store) => {
