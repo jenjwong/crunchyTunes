@@ -8,9 +8,7 @@ module.exports = (server) => {
     var room = 'HR41';
 
     socket.join(room);
-
     socket.emit('new track', sessionData[room].tracks);
-
 
     socket.on('add track', (track) => {
       // sessionData is a server side data store
@@ -90,7 +88,7 @@ module.exports = (server) => {
           if (!isDictatorSafe) {
             dataMethods.assignDictator(sessionData[room]);
             dataMethods.resetPlayerMoods(sessionData[room].userData);
-
+            
             var dictatorId = sessionData[room].dictator.userId;
             if (io.sockets.connected[dictatorId]) {
               io.sockets.connected[dictatorId].emit('assign dictator');
@@ -109,8 +107,6 @@ module.exports = (server) => {
       room = roomData.newRoom;
       dataMethods.addToStore(user, sessionData[room].userData);
       socket.emit('new track', sessionData[room].tracks)
-
-
     });
   });
 }
