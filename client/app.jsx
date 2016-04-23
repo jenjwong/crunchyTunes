@@ -135,16 +135,16 @@ class App extends React.Component {
                     >
             <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
           </NavDrawer>
-            <Panel>
-          <AppBar className="appBar" >
-            <SongPlayer track = {this.state.currentTrack} /> 
-            <ChangeRoom userId = {this.state.userId} 
-              handleRoomChange={this.handleRoomChange.bind(this)} 
-              room = {this.state.room}/>
-          </AppBar>
-          <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-          <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
-          <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
+          <Panel>
+            <AppBar className="appBar" >
+              <SongPlayer track = {this.state.currentTrack} /> 
+              <ChangeRoom userId = {this.state.userId} 
+                handleRoomChange={this.handleRoomChange.bind(this)} 
+                room = {this.state.room}/>
+            </AppBar>
+            <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+            <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
+            <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
             <CardsContainer tracks = {this.state.tracks}
               handleCardPlay = {this.handleCardPlay.bind(this)}
               room = {this.state.room}
@@ -154,7 +154,7 @@ class App extends React.Component {
             <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username }/>
           </Sidebar>
           <div><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></div>
-      </Layout>
+        </Layout>
       <LoginModal />
     </div>
     );
