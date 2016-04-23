@@ -1,4 +1,4 @@
-# Music Dictator: a Gamefied Music Playlist
+# Music Dictator: a Gamefied Music Player
 Become the next music dictator! The music dictator always gets to pick the tunes, but watchout, if the populace doesn't like the songs the dictator gets overthrown. 
 
 ## Stack
