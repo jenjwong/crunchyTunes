@@ -52,12 +52,6 @@ module.exports = (server) => {
       dataMethods.removeFromStore(user, sessionData.userData);
     });
 
-    // handle messages to send from one to all
-    socket.on('new message', (message) => {
-      socket.emit('new message', message);
-      socket.broadcast.emit('new message', message);
-    });
-
       // need to handle dictator change on disconnect
 
     socket.on('moodChange', (sentiment) => {
