@@ -23,6 +23,12 @@ var dataMethods = {
     }
   },
 
+  isDictator: (user) => user.isDictator,
+
+  updateProperty: (newValue, property, store) => {
+    store[property] = newValue;
+  },
+
   updateObjPropInStore: (target, store, callback) => {
     for (var i = 0; i < store.length; i++) {
       if (_.isMatch(store[i], target)) {
@@ -32,16 +38,15 @@ var dataMethods = {
     }
   },
 
-  getMood: (store, callback) => {
+  getMoods: (store, callback) => {
     var moodArray = _.map(store, 'mood');
     var totalMood = _.reduce(moodArray, (memo, num) => memo + num, 0);
     callback(totalMood);
   },
 
-  setTemperature: (store, mood, callback) => {
-    var temperature = Math.floor((mood/store.userData.length) * 100);
+  setTemperature: (store, mood) => {
+    var temperature = Math.floor((mood / store.userData.length) * 100);
     store.temperature = temperature;
-
   },
 
   isDictatorSafe: (mood) => {
@@ -52,9 +57,15 @@ var dataMethods = {
     }
   },
 
-  assignDictator: (store) => {
-    var index = Math.floor(Math.random() * store.userData.length);
-    var newDictator = store.userData[index];
+  assignDictator: (user, store) => {
+    var otherUsers = _.without(store.userData, user);
+
+    var index = Math.floor(Math.random() * otherUsers.length);
+
+    var newDictator = otherUsers[index];
+    // line below crashes server if the last person leaves the server
+    // server tries to assign true to undefined
+    newDictator.isDictator = true;
     store.dictator = newDictator;
   },
 

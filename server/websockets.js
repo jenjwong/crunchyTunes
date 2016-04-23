@@ -28,7 +28,7 @@ module.exports = (server) => {
       socket.broadcast.emit('remove from playlist', sessionData.tracks);
     });
 
-    //handle messages to send from one to all
+    // handle messages to send from one to all
     socket.on('new message', (message) => {
       socket.emit('new message', message);
       socket.broadcast.emit('new message', message);
@@ -36,48 +36,61 @@ module.exports = (server) => {
 
     socket.on('add user', (username) => {
       socket.username = username;
-      socket.emit('user joined', {
-        username: socket.username,
-      });
+      socket.emit('user joined', socket.username);
       user = {
         userName: username,
         userId: socket.id,
-        role: 'pleeb',
+        isDictator: false,
         mood: 0,
       };
+      if (sessionData.userData.length === 0) {
+        socket.emit('assign dictator');
+        user.isDictator = true;
+        sessionData.dictator = user;
+      }
       dataMethods.addToStore(user, sessionData.userData);
+
     });
 
     socket.on('disconnect', () => {
+      // handles undefined user for disconnects before
+      // joining with the modal
+      var isDictator = user ? user.isDictator : false;
+      if (isDictator) {
+        dataMethods.assignDictator(user, sessionData);
+        var dictatorId = sessionData.dictator.userId;
+        if (io.sockets.connected[dictatorId]) {
+          io.to(dictatorId).emit('assign dictator');
+          // i do not think the line below is necessary but haven't tested extensively
+          // io.sockets.connected[dictatorId].broadcast.emit('assign dictator');
+        }
+      }
       dataMethods.removeFromStore(user, sessionData.userData);
     });
 
       // need to handle dictator change on disconnect
 
-    socket.on('moodChange', (sentiment) => {
-      var target = {userId: socket.id};
+    socket.on('mood change', (sentiment) => {
+      var target = { userId: socket.id };
       dataMethods.updateObjPropInStore(target, sessionData.userData, (user) => {
         user.mood = sentiment;
       });
 
-      dataMethods.getMood(sessionData.userData, (mood) => {
+      dataMethods.getMoods(sessionData.userData, (mood) => {
         dataMethods.setTemperature(sessionData, mood);
 
-        socket.broadcast.emit('temperatureUpdate', {temperature: sessionData.temperature});
-        socket.emit('temperatureUpdate', {temperature: sessionData.temperature});
-        dataMethods.resetPlayerMoods(sessionData.userData);
-
-        dataMethods.getMood(sessionData.userData, (mood) => {
-          dataMethods.setTemperature(sessionData, mood);
+        socket.broadcast.emit('temperatureUpdate', { temperature: sessionData.temperature });
+        socket.emit('temperatureUpdate', { temperature: sessionData.temperature });
+        dataMethods.getMoods(sessionData.userData, (moods) => {
+          dataMethods.setTemperature(sessionData, moods);
           var isDictatorSafe = dataMethods.isDictatorSafe(mood);
           if (!isDictatorSafe) {
             dataMethods.assignDictator(sessionData);
+            dataMethods.resetPlayerMoods(sessionData.userData);
+
             var dictatorId = sessionData.dictator.userId;
             if (io.sockets.connected[dictatorId]) {
-              io.sockets.connected[dictatorId].emit('assignDictator');
-              // there is a chance the same dictator will be picked twice
-              // gahh math.random
-              io.sockets.connected[dictatorId].broadcast.emit('assignDictator');
+              io.sockets.connected[dictatorId].emit('assign dictator');
             }
           }
         });

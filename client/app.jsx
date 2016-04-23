@@ -21,7 +21,8 @@ class App extends React.Component {
       temperature: '',
       username: '',
       userId: '',
-      role: 'pleeb',
+      dictator: '',
+      isDictator: false,
       mood: 1,
 
       tracks: [
@@ -39,14 +40,21 @@ class App extends React.Component {
     };
   }
 
+  // add something that alters role in state
+
   componentDidMount() {
-    socket.on('user joined', (user) => {
+    socket.on('user joined', (username) => {
       this.setState(
-        { username: user.username,
+        { username: username,
           userId: socket.id });
     });
-    socket.on('assignDictator', (track) => {
-      console.log('i am dictator', this.state.userId)
+    socket.on('assign dictator', () => {
+      console.log('i am dictator', this.state.userId);
+      // toggle a dictator symbol on the screen
+      this.setState({
+        isDictator: true,
+        dictator: this.state.username,
+      });
     });
 
     socket.on('update track', (track) => {
@@ -54,9 +62,9 @@ class App extends React.Component {
     });
 
     socket.on('temperatureUpdate', (temp) => {
-      console.log('setTem', temp)
+      console.log('setTem', temp);
       this.setState({ temperature: temp.temperature });
-    })
+    });
 
     const self = this;
     queryAll({ query: 'Kanye',
@@ -103,7 +111,7 @@ class App extends React.Component {
     if (mood !== sentiment) {
       var oppositeMood = !!sentiment ? 1 : 0;
       this.setState({ mood: oppositeMood });
-      socket.emit('moodChange', this.state.mood);
+      socket.emit('mood change', this.state.mood);
     }
   }
 

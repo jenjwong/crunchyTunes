@@ -17,16 +17,16 @@ class VotingComponent extends React.Component {
 
   componentDidMount() {
   socket.on('temperatureUpdate', (temp) => {
-    console.log('setTem', temp)
-    this.setState({temperature: temp.temperature})
+    console.log('setTem', temp);
+    this.setState({ temperature: temp.temperature });
   })
   }
 
   render() {
     return (
-  <Card style={{width: '350px'}} raised>
+  <Card style={{ width: '350px' }} raised>
   <CardTitle
-    title={'The pleebs are ' + this.state.temperature + '% content'}
+    title={`The pleebs are${this.state.temperature}% content`}
     subtitle= {dummyText}
   />
   <CardActions>
