@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 import socket from './websockets.js'
 import {Button, IconButton} from 'react-toolbox/lib/button';
 import Input from 'react-toolbox/lib/input';
@@ -11,18 +11,7 @@ class ChangeRoom extends React.Component {
     };
   }
 
-
-  componentDidMount () {
-
-    //getting messages emmited from any users
-    socket.on('new message', (message) => { 
-       
-      this.updateMessages(message);
-    });
-  }
-
   handleInputChange (room) {
-    console.log(room);
     this.setState({
       room: room
     });
