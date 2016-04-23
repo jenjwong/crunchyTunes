@@ -13,10 +13,8 @@ var dataMethods = {
 
   removeFromStore: (item, store) => {
     for (var i = 0; i < store.length; i++) {
-      console.log('insideremove',store[i]+''+item);
       if (_.isEqual(store[i], item)) {
-        return store.splice(i, 1);
-        
+        return store.splice(i, 1); 
       }
     }
   },
