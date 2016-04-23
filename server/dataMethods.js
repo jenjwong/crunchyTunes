@@ -59,14 +59,12 @@ var dataMethods = {
 
   assignDictator: (user, store) => {
     var otherUsers = _.without(store.userData, user);
-
-    var index = Math.floor(Math.random() * otherUsers.length);
-
-    var newDictator = otherUsers[index];
-    // line below crashes server if the last person leaves the server
-    // server tries to assign true to undefined
-    newDictator.isDictator = true;
-    store.dictator = newDictator;
+    if (otherUsers) {
+      var index = Math.floor(Math.random() * otherUsers.length);
+      var newDictator = otherUsers[index];
+      newDictator.isDictator = true;
+      store.dictator = newDictator;
+    }
   },
 
   resetPlayerMoods: (store) => {
