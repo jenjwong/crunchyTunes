@@ -3,43 +3,34 @@ module.exports = (server) => {
   var io = require('socket.io')(server);
   var sessionData = require('./sessionData.js');
   var dataMethods = require('./dataMethods.js');
-
   io.on('connection', (socket) => {
     var user;
+    var room;
 
     socket.on('add track', (track) => {
-      // sessionData is a server side data store
-      dataMethods.addToStore(track, sessionData.tracks);
-      dataMethods.setRemovalInHalfHour(track, sessionData.tracks, function () {
-        socket.emit('remove from playlist', sessionData.tracks);
-      });
+    socket.join('HR41');
 
-      socket.emit('new track', sessionData.tracks);
-      socket.broadcast.emit('new track', sessionData.tracks);
+    socket.emit('new track', sessionData['HR41'].tracks);
+
+
+    socket.on('add track', (data) => {
+      // sessionData is a server side data store
+      dataMethods.addToStore(data.track, sessionData[data.room].tracks);
+      dataMethods.setRemovalInHalfHour(data.track, sessionData[data.room], function () {
+        // console.log('inside removal', sessionData[data.room]);
+        io.to(data.room).emit('remove from playlist', sessionData[data.room].tracks);
+        // io.broadcast(data.room).emit('remove from playlist', sessionData[data.room].tracks);
+      });
+      io.to(data.room).emit('new track', sessionData[data.room].tracks);
+      // io.broadcast(data.room).emit('new track', sessionData[data.room].tracks);
     });
 
-    socket.on('track play', (playing) => {
-      sessionData.currentTrack = playing;
-      socket.emit('update track', sessionData.currentTrack);
-      socket.broadcast.emit('update track', sessionData.currentTrack);
+    socket.on('track play', (data) => {
+      sessionData[data.room].currentTrack = data.track;
+      io.to(data.room).emit('update track', sessionData[data.room].currentTrack);
       // then delete track from playlist
-      dataMethods.removeFromStore(playing, sessionData.tracks);
-      socket.emit('remove from playlist', sessionData.tracks);
-      socket.broadcast.emit('remove from playlist', sessionData.tracks);
-  // var session = require('./sessionData.js');
-  // io.on('connection', (socket) => {
-  //   socket.on('add track', (data) => {
-  //     // sessionData is a server side data store
-  //     var room = data.room
-  //     session.sessionData[room].tracks.push(data.track);
-  //     socket.to(room).emit('new track', session.sessionData[room].tracks);
-  //     socket.to(room).broadcast.emit('new track', session.sessionData[room].tracks);
-  //   });
-
-  //   socket.on('track play', (playing, room) => {
-  //     session.sessionData.room.currentTrack = playing;
-  //     socket.to(room).emit('update track', sessionData.currentTrack);
-  //     socket.to(room).broadcast.emit('update track', sessionData.currentTrack);
+      dataMethods.removeFromStore(data.track, sessionData[data.room].tracks);
+      io.to(data.room).emit('remove from playlist', sessionData[data.room].tracks);
     });
 
     // handle messages to send from one to all
@@ -62,7 +53,7 @@ module.exports = (server) => {
         user.isDictator = true;
         sessionData.dictator = user;
       }
-      dataMethods.addToStore(user, sessionData.userData);
+      dataMethods.addToStore(user, sessionData['HR41'].userData);
 
     });
 
@@ -79,7 +70,7 @@ module.exports = (server) => {
           // io.sockets.connected[dictatorId].broadcast.emit('assign dictator');
         }
       }
-      dataMethods.removeFromStore(user, sessionData.userData);
+      dataMethods.removeFromStore(user, sessionData[room].userData);
     });
       // need to handle dictator change on disconnect
 
@@ -108,19 +99,25 @@ module.exports = (server) => {
           }
         });
       });
-    // io.on('disconnect', function(){
-    //   session.sessionData.room.userData.socket.id
-    // });
+    // handle messages to send from one to all
+    //handle messages to send from one to all
+    socket.on('new message', (message) => {
+      socket.emit('new message', message);
+      socket.broadcast.emit('new message', message);
+    });
 
-    io.on('change room', (roomData) =>{
-      if (!session.sessionData.roomData.newRoom) {
-        session.makeRoomSession(roomData.newRoom);
+    socket.on('change room', (roomData) =>{
+      if (!sessionData[roomData.newRoom]) {
+        sessionData.addRoomSession(roomData.newRoom);
       }
-      socket.leave('currentRoom');
-      socket.join('room');
-      // session.sessionData.roomData.newRoom.userData.socket.id={}
-      // Object.assign(session.sessionData.roomData.newRoom.userData.socket.id, session.sessionData.roomData.oldRoom.userData.socket.id);
-      // delete session.sessionData.roomData.oldRoom.userData.socket.id;
+      socket.leave(roomData.oldRoom);
+      dataMethods.removeFromStore(user, sessionData[roomData.oldRoom].userData);
+      socket.join(roomData.newRoom);
+      room = roomData.newRoom;
+      dataMethods.addToStore(user, sessionData[roomData.newRoom].userData);
+      socket.emit('new track', sessionData[roomData.newRoom].tracks)
+
+
     });
   });
 };
