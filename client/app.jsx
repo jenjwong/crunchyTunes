@@ -50,7 +50,6 @@ class App extends React.Component {
           userId: socket.id });
     });
     socket.on('you are dictator', (dictator) => {
-      console.log('i am dictator', dictator);
       // toggle a dictator symbol on the screen
       this.setState({
         isDictator: true,
@@ -59,7 +58,6 @@ class App extends React.Component {
     });
 
     socket.on('new dictator', (dictator) => {
-      console.log('newdictttt', dictator);
       this.setState({ dictator: dictator});
     });
 
@@ -67,8 +65,9 @@ class App extends React.Component {
       this.handleCardPlay(track);
     });
 
-    socket.on('temperatureUpdate', (temp) => {
-      this.setState({ temperature: temp.temperature });
+    socket.on('update temperature', (temperature) => {
+      console.log('temp in client', temperature);
+      this.setState({ temperature: temperature });
     });
 
     const self = this;
@@ -120,10 +119,16 @@ class App extends React.Component {
   }
 
   moodHandler(sentiment) {
+    console.log('sentiment', sentiment);
     var mood = this.state.mood; // 0 or 1
     if (mood !== sentiment) {
-      this.setState({ mood: sentiment });
-      socket.emit('mood change', this.state.mood);
+      console.log('before set state', this.state);
+      this.setState({ mood: sentiment }, function(){
+        socket.emit('mood change', this.state.mood);    
+      });
+      // console.log('after set state', this.state);
+
+      console.log('mood state', this.state.mood);
     }
     
   }

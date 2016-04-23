@@ -11,15 +11,12 @@ module.exports = (server) => {
     socket.emit('new track', sessionData[room].tracks);
 
     socket.on('add track', (track) => {
-      // sessionData is a server side data store
       dataMethods.addToStore(track, sessionData[room].tracks);
-      dataMethods.setRemovalInHalfHour(track, sessionData[room], function () {
-        // console.log('inside removal', sessionData[room]);
+      dataMethods.setRemovalInHalfHour(track, sessionData[room], () => {
         io.to(room).emit('remove from playlist', sessionData[room].tracks);
-        // io.broadcast(room).emit('remove from playlist', sessionData[room].tracks);
       });
+
       io.to(room).emit('new track', sessionData[room].tracks);
-      // io.broadcast(room).emit('new track', sessionData[room].tracks);
     });
 
     socket.on('track play', (track) => {
@@ -32,8 +29,7 @@ module.exports = (server) => {
 
     // handle messages to send from one to all
     socket.on('new message', (message) => {
-      socket.emit('new message', message);
-      socket.broadcast.emit('new message', message);
+      io.emit('new message', message);
     });
 
     socket.on('add user', (username) => {
@@ -49,11 +45,11 @@ module.exports = (server) => {
       if (sessionData[room].userData.length === 0) {
         user.isDictator = true;
         sessionData[room].dictator = user;
-        socket.emit('you are dictator', sessionData.dictator);
+        socket.emit('you are dictator', sessionData[room].dictator);
       }
+
       io.emit('new dictator', sessionData[room].dictator)
       dataMethods.addToStore(user, sessionData[room].userData);
-
     });
 
     socket.on('disconnect', () => {
@@ -64,8 +60,8 @@ module.exports = (server) => {
         dataMethods.assignDictator(user, sessionData[room]);
         var dictatorId = sessionData[room].dictator.userId;
         if (io.sockets.connected[dictatorId]) {
-          io.to(dictatorId).emit('you are dictator', sessionData.dictator);
-          socket.broadcast.emit('new dictator', sessionData.dictator);
+          io.to(dictatorId).emit('you are dictator', sessionData[room].dictator);
+          io.emit('new dictator', sessionData[room].dictator);
 
           // i do not think the line below is necessary but haven't tested extensively
           // io.sockets.connected[dictatorId].broadcast.emit('assign dictator');
@@ -82,17 +78,21 @@ module.exports = (server) => {
       });
 
       dataMethods.getMoods(sessionData[room].userData, (mood) => {
+        //set and broadcast temperature
         dataMethods.setTemperature(sessionData[room], mood);
 
         io.emit('update temperature', sessionData[room].temperature);
         dataMethods.getMoods(sessionData[room].userData, (moods) => {
+
           dataMethods.setTemperature(sessionData[room], moods);
           
           var isDictatorSafe = dataMethods.isDictatorSafe(sessionData[room].temperature);
           if (!isDictatorSafe) {
+
             dataMethods.assignDictator(sessionData[room].dictator, sessionData[room]);
             dataMethods.resetPlayerMoods(sessionData[room].userData);
-            io.emit('new dictator', sessionData[room].dictator);         
+            io.emit('new dictator', sessionData[room].dictator);   
+
             var dictatorId = sessionData[room].dictator.userId;
             if (io.sockets.connected[dictatorId]) {
               io.sockets.connected[dictatorId].emit('you are dictator', sessionData[room].dictator);

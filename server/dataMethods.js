@@ -43,7 +43,6 @@ var dataMethods = {
   },
 
   getMoods: (store, callback) => {
-    console.log('store', store);
     var moodArray = _.map(store, 'mood');
     var totalMood = _.reduce(moodArray, (memo, num) => memo + num, 0);
     console.log('MOODARRAY', moodArray);
@@ -55,20 +54,21 @@ var dataMethods = {
   setTemperature: (store, mood) => {
     // START TOMORROW CHECK MOOD MATH NOT WORKING
     //possible becaue not returning store or manipulating it orsomehtin
+    console.log('temp mood', mood);
     var temperature = Math.floor((mood / store.userData.length) * 100);
     store.temperature = temperature;
   },
 
-  isDictatorSafe: (mood) => {
-    if (mood > 75) {
+  isDictatorSafe: (temperature) => {
+    if (temperature > 75) {
       return false;
     } else {
       return true;
     }
   },
 
-  assignDictator: (user, store) => {
-    var otherUsers = _.without(store.userData, user);
+  assignDictator: (dictator, store) => {
+    var otherUsers = _.without(store.userData, dictator);
     if (otherUsers.length) {
       var index = Math.floor(Math.random() * otherUsers.length);
       var newDictator = otherUsers[index];

@@ -17,6 +17,7 @@ class PlayList extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.temperature)
     socket.on('new track', (tracks) => {
       this.handleNewTrack(tracks);
     });
