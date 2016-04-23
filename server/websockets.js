@@ -40,16 +40,18 @@ module.exports = (server) => {
       socket.username = username;
       socket.emit('user joined', socket.username);
       user = {
-        userName: username,
+        username: username,
         userId: socket.id,
         isDictator: false,
         mood: 0,
       };
+
       if (sessionData[room].userData.length === 0) {
-        socket.emit('assign dictator');
         user.isDictator = true;
         sessionData[room].dictator = user;
+        socket.emit('you are dictator', sessionData.dictator);
       }
+      io.emit('new dictator', sessionData[room].dictator)
       dataMethods.addToStore(user, sessionData[room].userData);
 
     });
@@ -62,7 +64,9 @@ module.exports = (server) => {
         dataMethods.assignDictator(user, sessionData[room]);
         var dictatorId = sessionData[room].dictator.userId;
         if (io.sockets.connected[dictatorId]) {
-          io.to(dictatorId).emit('assign dictator');
+          io.to(dictatorId).emit('you are dictator', sessionData.dictator);
+          socket.broadcast.emit('new dictator', sessionData.dictator);
+
           // i do not think the line below is necessary but haven't tested extensively
           // io.sockets.connected[dictatorId].broadcast.emit('assign dictator');
         }
@@ -80,23 +84,24 @@ module.exports = (server) => {
       dataMethods.getMoods(sessionData[room].userData, (mood) => {
         dataMethods.setTemperature(sessionData[room], mood);
 
-        socket.broadcast.emit('temperatureUpdate', { temperature: sessionData[room].temperature });
-        socket.emit('temperatureUpdate', { temperature: sessionData[room].temperature });
+        io.emit('update temperature', sessionData[room].temperature);
         dataMethods.getMoods(sessionData[room].userData, (moods) => {
           dataMethods.setTemperature(sessionData[room], moods);
-          var isDictatorSafe = dataMethods.isDictatorSafe(mood);
+          
+          var isDictatorSafe = dataMethods.isDictatorSafe(sessionData[room].temperature);
           if (!isDictatorSafe) {
-            dataMethods.assignDictator(sessionData[room]);
+            dataMethods.assignDictator(sessionData[room].dictator, sessionData[room]);
             dataMethods.resetPlayerMoods(sessionData[room].userData);
-            
+            io.emit('new dictator', sessionData[room].dictator);         
             var dictatorId = sessionData[room].dictator.userId;
             if (io.sockets.connected[dictatorId]) {
-              io.sockets.connected[dictatorId].emit('assign dictator');
+              io.sockets.connected[dictatorId].emit('you are dictator', sessionData[room].dictator);
             }
           }
         });
       });
     });
+
     socket.on('change room', (roomData) =>{
       if (!sessionData[roomData.newRoom]) {
         dataMethods.addRoomSession(roomData.newRoom);

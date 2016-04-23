@@ -23,8 +23,8 @@ class App extends React.Component {
       userId: '',
       dictator: '',
       isDictator: false,
-      mood: 1,
       room: 'HR41',
+      mood: 0,
 
       tracks: [
         {
@@ -49,13 +49,18 @@ class App extends React.Component {
         { username: username,
           userId: socket.id });
     });
-    socket.on('assign dictator', () => {
-      console.log('i am dictator', this.state.userId);
+    socket.on('you are dictator', (dictator) => {
+      console.log('i am dictator', dictator);
       // toggle a dictator symbol on the screen
       this.setState({
         isDictator: true,
-        dictator: this.state.username,
+        dictator: dictator,
       });
+    });
+
+    socket.on('new dictator', (dictator) => {
+      console.log('newdictttt', dictator);
+      this.setState({ dictator: dictator});
     });
 
     socket.on('update track', (track) => {
@@ -63,12 +68,11 @@ class App extends React.Component {
     });
 
     socket.on('temperatureUpdate', (temp) => {
-      console.log('setTem', temp);
       this.setState({ temperature: temp.temperature });
     });
 
     const self = this;
-    queryAll({ query: 'Kanye',
+    queryAll({ query: 'Grammatik',
       })
       .then((results) => {
         console.log(results);
@@ -105,7 +109,6 @@ class App extends React.Component {
 
   toggleSidebar() {
     this.setState({ sidebarPinned: !this.state.sidebarPinned});
-    this.setState({temperature: this.state.temperature+20})
   }
 
     handleRoomChange (room) {
@@ -119,22 +122,22 @@ class App extends React.Component {
   moodHandler(sentiment) {
     var mood = this.state.mood; // 0 or 1
     if (mood !== sentiment) {
-      var oppositeMood = !!sentiment ? 1 : 0;
-      this.setState({ mood: oppositeMood });
+      this.setState({ mood: sentiment });
       socket.emit('mood change', this.state.mood);
     }
     
   }
 
   render() {
+    {console.log('dictator', this.state.dictator.username)}
     return (
       <div>
         <Layout className='layout'>
           <AppBar className="appBar" >
             <div>
-            <div className='dictatorIs'>The ruling music dictator is {this.state.dictator}</div>
-            <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
-            <Button label="Overthrow" onClick={ () => this.moodHandler(1) } />
+              <div className='dictatorIs'>The ruling music dictator is {this.state.dictator.username}</div>
+              <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
+              <Button label="Overthrow" onClick={ () => this.moodHandler(1) } />
             </div>
             <SongPlayer track = {this.state.currentTrack} />
             <ChangeRoom userId = {this.state.userId} 
@@ -160,7 +163,7 @@ class App extends React.Component {
           </Sidebar>
           <div><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></div>
         </Layout>
-      <LoginModal />
+        <LoginModal />
     </div>
     );
   }
