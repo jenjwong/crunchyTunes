@@ -41,7 +41,8 @@ npm install -g jasmine
 
 'npm run dev-start'
 
-This script uses web pack to bundle your js and jsx files (with source maps), watches the files for changes to trigger a new bundle, and starts your node server on localhost:8080.
+This script uses web pack to bundle your js and jsx files (with source maps), watches the files for 
+changes to trigger a new bundle, and starts your node server on localhost:8080.
 
 Navigate your browser to localhost: 8080 to view the app.
 
