@@ -129,27 +129,27 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Layout className = 'layout'>
-          <NavDrawer active = {true}
-                    pinned = {true}
-                    className = 'navDrawer'
+        <Layout className='layout'>
+          <AppBar className="appBar" >
+            <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
+            <Button label="Overthrow" onClick={ () => this.moodHandler(1) } />
+            <SongPlayer track = {this.state.currentTrack} />
+            <ChangeRoom userId = {this.state.userId} 
+              handleRoomChange={this.handleRoomChange.bind(this)} 
+              room = {this.state.room}/>
+            <span className='chatButton'><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></span>
+          </AppBar>
+          <NavDrawer active={true}
+                    pinned={true}
+                    className='navDrawer'
                     >
             <PlayList temperature={this.state.temperature} handleCardPlay = {this.handleCardPlay.bind(this)} />
           </NavDrawer>
           <Panel>
-            <AppBar className="appBar" >
-              <ChangeRoom userId = {this.state.userId} 
-                handleRoomChange={this.handleRoomChange.bind(this)} 
-                room = {this.state.room}/>
-              <SongPlayer track = {this.state.currentTrack} />
-              <span className='chatButton'><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></span>
-            </AppBar>
-          <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-          <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
-          <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
-            <CardsContainer tracks = {this.state.tracks}
-              handleCardPlay = {this.handleCardPlay.bind(this)}
-              room = {this.state.room}
+            <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+              <CardsContainer tracks = {this.state.tracks}
+                handleCardPlay = {this.handleCardPlay.bind(this)}
+                room = {this.state.room}
             />
           </Panel>
           <Sidebar className='sideBar' pinned={ this.state.sidebarPinned } width={ 5 }>
