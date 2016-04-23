@@ -1,25 +1,29 @@
 var _ = require('lodash');
+var socket = require('./websockets.js');
+var sessionData = require('./sessionData.js');
 
 var dataMethods = {
-  setRemovalInHalfHour: (track, tracks, callback) => {
+
+  setRemovalInHalfHour: (track, store, callback) => {
     setTimeout(() => {
-      dataMethods.removeFromStore(track, tracks);
+      dataMethods.removeFromStore(track, store.tracks);
       callback();
     }, 1800000);
   },
-  removeFromStore: (itemToRemove, store) => {
+
+  removeFromStore: (item, store) => {
     for (var i = 0; i < store.length; i++) {
-      if (_.isEqual(store[i], itemToRemove)) {
-        store.splice(i, 1);
-        return;
+      if (_.isEqual(store[i], item)) {
+        return store.splice(i, 1); 
       }
     }
   },
-  addToStore: (itemToAdd, store) => {
-    if (Array.isArray(store)) {
-      store.push(itemToAdd);
+
+  addToStore: (item, store) => {
+    if(Array.isArray(store)){
+      store.push(item);
     } else {
-      console.log('we only currently support adding to arrays');
+      console.log('Storage is not an array. Arrays are only supported');
     }
   },
 
@@ -73,6 +77,16 @@ var dataMethods = {
     });
   },
 
+  addRoomSession: (roomName) => {
+    sessionData[roomName] = {
+    temperature: 0,
+    userData: [],
+    tracks: [],
+    currentTrack: null,
+    room: roomName
+    };
+  }
 };
+
 
 module.exports = dataMethods;

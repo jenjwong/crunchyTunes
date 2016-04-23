@@ -3,7 +3,6 @@ import Button from 'react-toolbox/lib/button';
 import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
 import ClassNames from 'classnames';
 import style from './styles/toolbox-theme';
-
 import socket from './websockets.js';
 
 class CardsContainer extends React.Component {
@@ -16,7 +15,7 @@ class CardsContainer extends React.Component {
   }
 
   handleBuildPlaylist(track) {
-    socket.emit('add track', track);
+    socket.emit('add track', track );
   }
 
   render() {

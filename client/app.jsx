@@ -12,7 +12,7 @@ import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 import VotingComponent from './VotingComponent.jsx';
-
+import ChangeRoom from './changeRoom.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class App extends React.Component {
       dictator: '',
       isDictator: false,
       mood: 1,
+      room: 'HR41',
 
       tracks: [
         {
@@ -106,6 +107,14 @@ class App extends React.Component {
     this.setState({ sidebarPinned: !this.state.sidebarPinned});
   }
 
+    handleRoomChange (room) {
+    let oldRoom = this.state.room;
+    this.setState({
+      room: room
+    });
+    socket.emit('change room', {oldRoom:oldRoom, newRoom:room})
+  }
+
   moodHandler(sentiment) {
     var mood = this.state.mood; // 0 or 1
     if (mood !== sentiment) {
@@ -113,34 +122,39 @@ class App extends React.Component {
       this.setState({ mood: oppositeMood });
       socket.emit('mood change', this.state.mood);
     }
+    
   }
 
   render() {
     return (
       <div>
-        <Layout className='layout'>
-          <NavDrawer active={true}
-                    pinned={true}
-                    className='navDrawer'
+        <Layout className = 'layout'>
+          <NavDrawer active = {true}
+                    pinned = {true}
+                    className = 'navDrawer'
                     >
             <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
           </NavDrawer>
-            <Panel>
-          <AppBar className="appBar" >
-            <SongPlayer track = {this.state.currentTrack} />
-          </AppBar>
-          <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-          <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
-          <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
+          <Panel>
+            <AppBar className="appBar" >
+              <SongPlayer track = {this.state.currentTrack} /> 
+              <ChangeRoom userId = {this.state.userId} 
+                handleRoomChange={this.handleRoomChange.bind(this)} 
+                room = {this.state.room}/>
+            </AppBar>
+            <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
+            <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
+            <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
             <CardsContainer tracks = {this.state.tracks}
               handleCardPlay = {this.handleCardPlay.bind(this)}
+              room = {this.state.room}
             />
           </Panel>
           <Sidebar className='sideBar' pinned={ this.state.sidebarPinned } width={ 5 }>
             <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username }/>
           </Sidebar>
           <div><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></div>
-      </Layout>
+        </Layout>
       <LoginModal />
     </div>
     );
