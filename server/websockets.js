@@ -3,14 +3,12 @@ module.exports = (server) => {
   var io = require('socket.io')(server);
   var sessionData = require('./sessionData.js');
   var dataMethods = require('./dataMethods.js');
+  var room = 'HR41';
   io.on('connection', (socket) => {
     var user;
-    var room;
+    socket.join(room);
 
-    socket.on('add track', (track) => {
-    socket.join('HR41');
-
-    socket.emit('new track', sessionData['HR41'].tracks);
+    socket.emit('new track', sessionData[room].tracks);
 
 
     socket.on('add track', (data) => {
@@ -48,12 +46,12 @@ module.exports = (server) => {
         isDictator: false,
         mood: 0,
       };
-      if (sessionData.userData.length === 0) {
+      if (sessionData[room].userData.length === 0) {
         socket.emit('assign dictator');
         user.isDictator = true;
         sessionData.dictator = user;
       }
-      dataMethods.addToStore(user, sessionData['HR41'].userData);
+      dataMethods.addToStore(user, sessionData[room].userData);
 
     });
 
@@ -99,6 +97,7 @@ module.exports = (server) => {
           }
         });
       });
+    });
     // handle messages to send from one to all
     //handle messages to send from one to all
     socket.on('new message', (message) => {
@@ -120,4 +119,4 @@ module.exports = (server) => {
 
     });
   });
-};
+}
