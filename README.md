@@ -62,8 +62,7 @@ View the project roadmap [here](https://waffle.io/unassumingQuasar/crunchyTunes)
 
 ### Progress
 
-
-[![Throughput Graph](https://graphs.waffle.io/unassumingQuasar/crunchy-tunes/throughput.svg)](https://waffle.io/unassumingQuasar/crunchy-tunes/metrics)
+[![Throughput Graph](https://graphs.waffle.io/unassumingQuasar/crunchyTunes/throughput.svg)](https://waffle.io/unassumingQuasar/crunchyTunes/metrics/throughput)
 
 
 ## Contributing
