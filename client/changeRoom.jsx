@@ -23,7 +23,7 @@ class ChangeRoom extends React.Component {
       <div>
         <Input type="text" style={{ width: '200px' }} label="" icon=""
         onChange={(value) =>this.handleInputChange(value)}  />
-        <Button label='Change Room' raised onMouseUp={() => this.props.handleRoomChange(this.state.room)}/>
+        <Button className='changeRoom' label='Change Room' raised onMouseUp={() => this.props.handleRoomChange(this.state.room)}/>
       </div>
     );
   }

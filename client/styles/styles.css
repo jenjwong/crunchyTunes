@@ -4,6 +4,8 @@
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+
 }
 
 body{
@@ -42,7 +44,7 @@ body{
   padding: 0px;
 }
 .navBar {
-  width: 700px;
+  width: 500px;
   box-shadow: none;
 }
 .search-bar {
@@ -55,6 +57,8 @@ body{
   padding: 0 !important;
   box-shadow: none !important;
   background-color: #8BC34A !important;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+
   /*background-color: rgba(255, 193, 5, 0.53) !important;*/
   /*background-color: rgba(255, 193, 5, 0.53) !important;*/
 
@@ -127,3 +131,12 @@ Card {
   box-shadow: none;
   border: 2px solid yellowgreen;
 }
+
+.room {
+  display: inline-block;
+}
+
+.navSpan {
+  display: inline-block;
+}
+

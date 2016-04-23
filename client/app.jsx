@@ -144,6 +144,7 @@ class App extends React.Component {
               <Button label="Overthrow" onClick={ () => this.moodHandler(1) } />
             </div>
             <SongPlayer track = {this.state.currentTrack} />
+            <span>Room: {this.state.room}</span>
             <span className='chatButton'><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></span>
           </AppBar>
           <NavDrawer active={true}
@@ -154,8 +155,8 @@ class App extends React.Component {
           </NavDrawer>
           <Panel>
             <div>
-            <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-            <span><ChangeRoom userId = {this.state.userId} 
+            <span className='navSpan'><Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } /></span>
+            <span className='room'><ChangeRoom userId = {this.state.userId} 
               handleRoomChange={this.handleRoomChange.bind(this)} 
               room = {this.state.room}/></span>
             </div>
