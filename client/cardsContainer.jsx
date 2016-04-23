@@ -15,7 +15,7 @@ class CardsContainer extends React.Component {
   }
 
   handleBuildPlaylist(track) {
-    socket.emit('add track', {track:track, room:this.props.room});
+    socket.emit('add track', track );
   }
 
   render() {
