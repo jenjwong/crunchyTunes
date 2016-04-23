@@ -59,7 +59,7 @@ var dataMethods = {
 
   assignDictator: (user, store) => {
     var otherUsers = _.without(store.userData, user);
-    if (otherUsers) {
+    if (otherUsers.length) {
       var index = Math.floor(Math.random() * otherUsers.length);
       var newDictator = otherUsers[index];
       newDictator.isDictator = true;
