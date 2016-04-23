@@ -11,20 +11,19 @@ import PlayList from './playList.jsx';
 import { Layout, NavDrawer, Panel, Sidebar, IconButton} from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
-import VotingComponent from './VotingComponent.jsx';
 import ChangeRoom from './changeRoom.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      temperature: '',
+      temperature: 0,
       username: '',
       userId: '',
       dictator: '',
       isDictator: false,
-      mood: 1,
       room: 'HR41',
+      mood: 0,
 
       tracks: [
         {
@@ -49,26 +48,29 @@ class App extends React.Component {
         { username: username,
           userId: socket.id });
     });
-    socket.on('assign dictator', () => {
-      console.log('i am dictator', this.state.userId);
+    socket.on('you are dictator', (dictator) => {
       // toggle a dictator symbol on the screen
       this.setState({
         isDictator: true,
-        dictator: this.state.username,
+        dictator: dictator,
       });
+    });
+
+    socket.on('new dictator', (dictator) => {
+      this.setState({ dictator: dictator});
     });
 
     socket.on('update track', (track) => {
       this.handleCardPlay(track);
     });
 
-    socket.on('temperatureUpdate', (temp) => {
-      console.log('setTem', temp);
-      this.setState({ temperature: temp.temperature });
+    socket.on('update temperature', (temperature) => {
+      console.log('temp in client', temperature);
+      this.setState({ temperature: temperature });
     });
 
     const self = this;
-    queryAll({ query: 'Kanye',
+    queryAll({ query: 'Grammatik',
       })
       .then((results) => {
         console.log(results);
@@ -116,46 +118,60 @@ class App extends React.Component {
   }
 
   moodHandler(sentiment) {
+    console.log('sentiment', sentiment);
     var mood = this.state.mood; // 0 or 1
     if (mood !== sentiment) {
-      var oppositeMood = !!sentiment ? 1 : 0;
-      this.setState({ mood: oppositeMood });
-      socket.emit('mood change', this.state.mood);
+      console.log('before set state', this.state);
+      this.setState({ mood: sentiment }, function(){
+        socket.emit('mood change', this.state.mood);    
+      });
+      // console.log('after set state', this.state);
+
+      console.log('mood state', this.state.mood);
     }
     
   }
 
   render() {
+    {console.log('dictator', this.state.dictator.username)}
     return (
       <div>
-        <Layout className = 'layout'>
-          <NavDrawer active = {true}
-                    pinned = {true}
-                    className = 'navDrawer'
+        <Layout className='layout'>
+          <AppBar className="appBar" >
+            <div>
+              <div className='dictatorIs'>The ruling music dictator is {this.state.dictator.username}</div>
+              <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
+              <Button label="Overthrow" onClick={ () => this.moodHandler(1) } />
+            </div>
+            <SongPlayer track = {this.state.currentTrack} />
+            <span>Room: {this.state.room}</span>
+            <span className='chatButton'><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></span>
+          </AppBar>
+          <NavDrawer active={true}
+                    pinned={true}
+                    className='navDrawer'
                     >
-            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
+            <PlayList temperature={this.state.temperature} handleCardPlay = {this.handleCardPlay.bind(this)} isDictator={ this.state.isDictator }/>
           </NavDrawer>
           <Panel>
-            <AppBar className="appBar" >
-              <SongPlayer track = {this.state.currentTrack} /> 
-              <ChangeRoom userId = {this.state.userId} 
-                handleRoomChange={this.handleRoomChange.bind(this)} 
-                room = {this.state.room}/>
-            </AppBar>
-            <Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } />
-            <Button label="Like"  icon='favorite' accent onClick={ () => this.moodHandler(0) } />
-            <Button label="Not so much" onClick={ () => this.moodHandler(1) } />
-            <CardsContainer tracks = {this.state.tracks}
-              handleCardPlay = {this.handleCardPlay.bind(this)}
-              room = {this.state.room}
+            <div>
+            <span className='navSpan'><Nav className="searchBar" handleSearch = { this.handleSearch.bind(this) } searching={ this.state.searching } /></span>
+            <span className='room'><ChangeRoom userId = {this.state.userId} 
+              handleRoomChange={this.handleRoomChange.bind(this)} 
+              room = {this.state.room}/></span>
+            </div>
+              <CardsContainer tracks = {this.state.tracks}
+                handleCardPlay = {this.handleCardPlay.bind(this)}
+                room = {this.state.room}
+                isDictator = {this.state.isDictator}
             />
           </Panel>
           <Sidebar className='sideBar' pinned={ this.state.sidebarPinned } width={ 5 }>
-            <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username }/>
+            <ChatBox toggleSidebar={this.toggleSidebar.bind(this)} username={this.state.username } />
           </Sidebar>
           <div><Button icon={this.state.sidebarPinned ? 'close' : 'inbox'} label='Chat' onClick={ this.toggleSidebar.bind(this) }/></div>
         </Layout>
-      <LoginModal />
+        <LoginModal />
     </div>
     );
   }
