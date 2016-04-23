@@ -108,7 +108,6 @@ class App extends React.Component {
   }
 
     handleRoomChange (room) {
-    console.log(room);
     let oldRoom = this.state.room;
     this.setState({
       room: room
@@ -134,11 +133,11 @@ class App extends React.Component {
                     pinned = {true}
                     className = 'navDrawer'
                     >
-            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} room = {this.state.room} />
+            <PlayList handleCardPlay = {this.handleCardPlay.bind(this)} />
           </NavDrawer>
             <Panel>
           <AppBar className="appBar" >
-            <SongPlayer track = {this.state.currentTrack} room = {this.state.room} /> 
+            <SongPlayer track = {this.state.currentTrack} /> 
             <ChangeRoom userId = {this.state.userId} 
               handleRoomChange={this.handleRoomChange.bind(this)} 
               room = {this.state.room}/>
