@@ -1,4 +1,4 @@
-var _ = require('lodash');
+ var _ = require('lodash');
 var socket = require('./websockets.js');
 var sessionData = require('./sessionData.js');
 
@@ -8,7 +8,7 @@ var dataMethods = {
     setTimeout(() => {
       dataMethods.removeFromStore(track, store.tracks);
       callback();
-    }, 1800000);
+    }, 180000);
   },
 
   removeFromStore: (item, store) => {
@@ -81,6 +81,14 @@ var dataMethods = {
     _.each(store, (player) => {
       player.mood = 0;
     });
+  },
+  InStore:(item, store) => {
+    for (var i = 0; i < store.length; i++) {
+      if (_.isEqual(store[i], item)) {
+        return true; 
+      }
+    }
+    return false;
   },
 
   addRoomSession: (roomName) => {
