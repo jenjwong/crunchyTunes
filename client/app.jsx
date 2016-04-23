@@ -59,7 +59,6 @@ class App extends React.Component {
     });
 
     socket.on('update track', (track) => {
-      console.log(track);
       this.handleCardPlay(track);
     });
 
