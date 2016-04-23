@@ -1,6 +1,9 @@
 # Music Dictator: a Gamefied Music Playlist
 Become the next music dictator! The music dictator always gets to pick the tunes, but watchout, if the populace doesn't like the songs the dictator gets overthrown. 
 
+## Stack
+Music Dictator is built using Sockets Io, React and Node JS. 
+
 ## Team
 
   - __Product Owner__: Mark Tynes
