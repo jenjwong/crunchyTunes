@@ -26,14 +26,14 @@ var dataMethods = {
   updateObjPropInStore: (target, store, callback) => {
     for (var i = 0; i < store.length; i++) {
       if (_.isMatch(store[i], target)) {
-        callback(store[i])
+        callback(store[i]);
         break;
       }
     }
   },
 
   getMood: (store, callback) => {
-    var moodArray = _.pluck(store, 'mood');
+    var moodArray = _.map(store, 'mood');
     var totalMood = _.reduce(moodArray, (memo, num) => memo + num, 0);
     callback(totalMood);
   },

@@ -55,7 +55,7 @@ class App extends React.Component {
 
     socket.on('temperatureUpdate', (temp) => {
       console.log('setTem', temp)
-      this.setState({temperature: temp.temperature})
+      this.setState({ temperature: temp.temperature });
     })
 
     const self = this;
@@ -101,9 +101,8 @@ class App extends React.Component {
   moodHandler(sentiment) {
     var mood = this.state.mood; // 0 or 1
     if (mood !== sentiment) {
-      var oppositeMood = !!sentiment ? 0 : 1;
-      console.log('inside moodHandler');
-      this.setState({mood: oppositeMood});
+      var oppositeMood = !!sentiment ? 1 : 0;
+      this.setState({ mood: oppositeMood });
       socket.emit('moodChange', this.state.mood);
     }
   }
