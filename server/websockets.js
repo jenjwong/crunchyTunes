@@ -11,12 +11,18 @@ module.exports = (server) => {
     socket.emit('new track', sessionData[room].tracks);
 
     socket.on('add track', (track) => {
-      dataMethods.addToStore(track, sessionData[room].tracks);
-      dataMethods.setRemovalInHalfHour(track, sessionData[room], () => {
-        io.to(room).emit('remove from playlist', sessionData[room].tracks);
-      });
+      // sessionData is a server side data store
+      if(!dataMethods.InStore(track, sessionData[room].tracks)) {
 
-      io.to(room).emit('new track', sessionData[room].tracks);
+        dataMethods.addToStore(track, sessionData[room].tracks);
+        dataMethods.setRemovalInHalfHour(track, sessionData[room], function () {
+          // console.log('inside removal', sessionData[room]);
+          io.to(room).emit('remove from playlist', sessionData[room].tracks);
+          // io.broadcast(room).emit('remove from playlist', sessionData[room].tracks);
+        });
+        io.to(room).emit('new track', sessionData[room].tracks);
+        // io.broadcast(room).emit('new track', sessionData[room].tracks);
+      }
     });
 
     socket.on('track play', (track) => {
