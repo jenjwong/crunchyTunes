@@ -35,7 +35,7 @@ class App extends React.Component {
         apiSource: 'test',
       },
       searching: false,
-      sidebarPinned: false
+      sidebarPinned: false,
     };
   }
 
