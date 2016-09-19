@@ -58,8 +58,6 @@ Navigate your browser to localhost: 8080 to view the app.
 
 ```
 
-### Current Build Health [![Build Status](https://travis-ci.org/ImmaculateHangover/crunchy-tunes.svg?branch=master)](https://travis-ci.org/ImmaculateHangover/crunchy-tunes)
-
 ### Roadmap
 
 View the project roadmap [here](https://waffle.io/unassumingQuasar/crunchyTunes)
