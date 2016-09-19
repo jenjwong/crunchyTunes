@@ -62,10 +62,6 @@ Navigate your browser to localhost: 8080 to view the app.
 
 View the project roadmap [here](https://waffle.io/unassumingQuasar/crunchyTunes)
 
-### Progress
-
-[![Throughput Graph](https://graphs.waffle.io/unassumingQuasar/crunchyTunes/throughput.svg)](https://waffle.io/unassumingQuasar/crunchyTunes/metrics/throughput)
-
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
